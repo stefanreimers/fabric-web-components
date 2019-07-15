@@ -130,6 +130,6 @@ var FabricPivot = (function (_super) {
 window.customElements.define('fabric-pivot', FabricPivot);
 (function (w, d) {
     var style = d.createElement('STYLE');
-    style.textContent = "fabric-pivot {display: inline-block}\n.ms-Pivot{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;box-sizing:border-box;margin:0;padding:0;box-shadow:none;font-size:14px;font-weight:400}\n.ms-Pivot-content{display:none;margin-top:20px}\n.ms-Pivot-content.visible{display:block}\n";
+    style.textContent = "fabric-pivot {display: inline-block}\n.ms-Pivot{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;box-sizing:border-box;margin:0;padding:0;box-shadow:none;font-size:14px;font-weight:400;overflow:hidden}\n.ms-Pivot-content{display:none;margin-top:20px}\n.ms-Pivot-content.visible{display:block;overflow:auto;position:absolute;top:0;bottom:0;left:0;right:0}\n.ms-Pivot-content-container {position: relative; flex: 1 1 auto !important;}\n.ms-Pivot {\n    display: flex;\n    flex-direction: column;\n    flex-wrap: nowrap;\n    justify-content: flex-start;\n    align-content: stretch;\n    align-items: stretch;\n}\n.ms-Pivot > * {order: 0; flex: 0 1 auto; align-self: auto;}\n";
     d.head.appendChild(style);
 })(window, document);

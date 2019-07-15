@@ -101,9 +101,19 @@ window.customElements.define('fabric-pivot', FabricPivot);
 (function (w, d) {
     let style = d.createElement('STYLE');
     style.textContent = `fabric-pivot {display: inline-block}
-.ms-Pivot{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;box-sizing:border-box;margin:0;padding:0;box-shadow:none;font-size:14px;font-weight:400}
+.ms-Pivot{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;box-sizing:border-box;margin:0;padding:0;box-shadow:none;font-size:14px;font-weight:400;overflow:hidden}
 .ms-Pivot-content{display:none;margin-top:20px}
-.ms-Pivot-content.visible{display:block}
+.ms-Pivot-content.visible{display:block;overflow:auto;position:absolute;top:0;bottom:0;left:0;right:0}
+.ms-Pivot-content-container {position: relative; flex: 1 1 auto !important;}
+.ms-Pivot {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: stretch;
+}
+.ms-Pivot > * {order: 0; flex: 0 1 auto; align-self: auto;}
 `;
     d.head.appendChild(style);
 })(window, document);
