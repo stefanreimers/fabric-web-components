@@ -14,6 +14,12 @@
 	<script>
     window.Promise || document.write('<script src="../polyfills/promise.min.js"><\/script>')
   </script>
+  <script>
+    (typeof Object.assign === 'function') || document.write('<script src="../polyfills/object.assign.js"><\/script>')
+  </script>
+	<script>
+    Element.prototype.closest || document.write('<script src="../polyfills/element.closest.js"><\/script>')
+  </script>
 	<script>
 		(window.customElements) || document.write('<script src="../polyfills/custom-elements.min.js"><\/script>')
 	</script>
@@ -21,16 +27,16 @@
 	<script src="fabric-list-item.js" type="text/javascript"></script>
 	<script src="fabric-button.js" type="text/javascript"></script>
   <script src="fabric-checkbox.js" type="text/javascript"></script>
-  <!--<script src="fabric-table.js" type="text/javascript"></script>
+  <script src="fabric-table.js" type="text/javascript"></script>
 	<script src="fabric-choicefieldgroup.js" type="text/javascript"></script>
 	<script src="fabric-radiobutton.js" type="text/javascript"></script>
 	<script src="fabric-form.js" type="text/javascript"></script>
 	<script src="fabric-contextual-host.js" type="text/javascript"></script>
-	<script src="fabric-contextual-menu.js" type="text/javascript"></script>-->
+	<script src="fabric-contextual-menu.js" type="text/javascript"></script>
 	<script src="fabric-tabs.js" type="text/javascript"></script>
 	<script src="fabric-pivot.js" type="text/javascript"></script>
-	<!--<script src="fabric-select.js" type="text/javascript"></script>
-	<script src="fabric-search.js" type="text/javascript"></script>-->
+	<script src="fabric-select.js" type="text/javascript"></script>
+	<script src="fabric-search.js" type="text/javascript"></script>
 	<script src="fabric-textfield.js" type="text/javascript"></script>
 	<script src="fabric-toggle.js" type="text/javascript"></script>
   <script src="fabric-slider.js" type="text/javascript"></script>
@@ -95,12 +101,12 @@
 		<fabric-checkbox form="form1" name="bla2" value="blub3" label="Checkbox 1"></fabric-checkbox>
 		<fabric-checkbox form="form1" name="bla2" value="blub4" label="Checkbox 2"></fabric-checkbox>
 	</section>
-	<!--<section class="radio" >
+	<section class="radio" >
 		<fabric-choicefieldgroup form="form1" name="bla" label="Choose your destiny">	
 			<fabric-radiobutton name="bla" label="Either this" value="blub"></fabric-radiobutton>
 			<fabric-radiobutton name="bla" label="Or that" value="blub2"></fabric-radiobutton>
 		</fabric-choicefieldgroup>
-	</section>-->
+	</section>
 	
 	
 	
@@ -158,8 +164,6 @@
 	</section>
 		
 	
-	<!--	
-	
 	<h3>Table</h3>
 	<section class="table" >
 	<fabric-button onclick="into()">Fill with data</fabric-button>
@@ -183,9 +187,6 @@
 	 </fabric-contextual-menu>
 	 </div>
 	</section>
-	 
-	-->
-	
 	
 	<script>
 	const tabs = document.querySelector('fabric-tabs');
@@ -202,8 +203,8 @@
 	</script>
 	
 	
-	 <!--<fabric-form name="form1" style="display:block !important; width: 50vw">
-	 </fabric-form>-->
+	 <fabric-form name="form1" style="display:block !important; width: 50vw">
+	 </fabric-form>
 	
 	
 	
