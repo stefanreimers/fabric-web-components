@@ -75,14 +75,6 @@ class FabricSearch extends HTMLElement {
             if (this._refs.label)
                 this._refs.label.textContent = this._label;
         }
-        if (property == null || property === 'timer') {
-            if (this._timer == null) {
-                this.__removeTimer();
-            }
-            else {
-                this.__setTimer();
-            }
-        }
     }
     __setHasText() {
         this._refs.container.classList[(this._refs.input.value != null && this._refs.input.value !== "") ? 'add' : 'remove']('has-text');

@@ -103,7 +103,7 @@ class FabricSearch extends HTMLElement {
     if (property == null || property === 'label') { if (this._refs.label) this._refs.label.textContent = this._label; }
 
     //@ts-ignore
-    if (property == null || property === 'timer') { if (this._timer == null) { this.__removeTimer() } else { this.__setTimer() } }
+    // if (property == null || property === 'timer') { if (this._timer == null) { this.__removeTimer() } else { this.__setTimer() } }
   }
 
   // __setTimer(){
