@@ -167,6 +167,11 @@ var FabricTextfield = (function (_super) {
                 if (_this._refs.input)
                     _this._refs.input.focus();
             });
+        if (this._refs.input)
+            this._refs.input.addEventListener("input", function (event) {
+                if (event.target)
+                    _this._value = event.target.value;
+            });
         if (this._modifier === 'underlined' && this._refs.input) {
             this._refs.input.addEventListener("focus", function (event) {
                 if (_this._refs.container)

@@ -115,6 +115,11 @@ class FabricTextfield extends HTMLElement {
                 if (this._refs.input)
                     this._refs.input.focus();
             });
+        if (this._refs.input)
+            this._refs.input.addEventListener("input", (event) => {
+                if (event.target)
+                    this._value = event.target.value;
+            });
         if (this._modifier === 'underlined' && this._refs.input) {
             this._refs.input.addEventListener("focus", (event) => {
                 if (this._refs.container)
