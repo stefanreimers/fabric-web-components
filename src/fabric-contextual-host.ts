@@ -4,7 +4,7 @@ class FabricContextualHost extends HTMLElement {
   private _arrowPosition: any;
   private _matchTargetWidth: boolean = false;
   private _multiselect: boolean = false;
-  private _target: { element: any, height: any, width: any };
+  private _target: { element?: any, height?: any, width?: any };
   private _direction: string = 'bottom';
   public _refs: { [index: string]: any };
 
@@ -40,7 +40,7 @@ class FabricContextualHost extends HTMLElement {
     if (value === this._arrowPosition) return; this._arrowPosition = value; this.__setProperties('arrowPosition')
   }
 
-  set target(value) { this._target.element = value; /*this.__openModal()*/ }
+  set target(value) { if (this._target == null) this._target = {}; this._target.element = value; /*this.__openModal()*/ }
   set direction(value) { if (this._AVAILABLE_DIRECTIONS.indexOf(value) === -1) throw new RangeError('Direction unknown'); this._direction = value }
   set matchTargetWidth(value) { this._matchTargetWidth = !!value }
   set multiselect(value) { this._multiselect = !!value }
@@ -50,12 +50,16 @@ class FabricContextualHost extends HTMLElement {
     // this.__setupUI();
     // this.__setListeners();
 
+    console.log('connectedCallback')
+
     // Init target via selector in DOM attribute
     if (this._target.element == null) {
       let selector = this.getAttribute('host');
       if (selector) {
         let target = this.closest(selector) || document.querySelector(selector);
         if (target) this.target = target;
+      } else {
+        console.info('Could not find target')
       }
     }
 
@@ -172,7 +176,7 @@ class FabricContextualHost extends HTMLElement {
 
   }
 
-  __findAvailablePosition() {
+  private __findAvailablePosition() {
     let _posOk;
 
     switch (this._direction) {

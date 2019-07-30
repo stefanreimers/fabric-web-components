@@ -24,6 +24,7 @@ class FabricContextualMenu extends FabricContextualHost {
   set hostEvent(value) { throw new RangeError('The hostEvent property is static.') }
 
   connectedCallback() {
+    super.connectedCallback();
     this.__getStaticAttributes();
     this.__setupUI();
 

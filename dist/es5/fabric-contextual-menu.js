@@ -43,6 +43,7 @@ var FabricContextualMenu = (function (_super) {
     });
     ;
     FabricContextualMenu.prototype.connectedCallback = function () {
+        _super.prototype.connectedCallback.call(this);
         this.__getStaticAttributes();
         this.__setupUI();
         this.__boundHostEventHandler = this.__hostEventHandler.bind(this);

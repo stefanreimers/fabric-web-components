@@ -28,18 +28,23 @@ class FabricContextualHost extends HTMLElement {
         this._arrowPosition = value;
         this.__setProperties('arrowPosition');
     }
-    set target(value) { this._target.element = value; }
+    set target(value) { if (this._target == null)
+        this._target = {}; this._target.element = value; }
     set direction(value) { if (this._AVAILABLE_DIRECTIONS.indexOf(value) === -1)
         throw new RangeError('Direction unknown'); this._direction = value; }
     set matchTargetWidth(value) { this._matchTargetWidth = !!value; }
     set multiselect(value) { this._multiselect = !!value; }
     connectedCallback() {
+        console.log('connectedCallback');
         if (this._target.element == null) {
             let selector = this.getAttribute('host');
             if (selector) {
                 let target = this.closest(selector) || document.querySelector(selector);
                 if (target)
                     this.target = target;
+            }
+            else {
+                console.info('Could not find target');
             }
         }
         this.__setResizeDisposal();

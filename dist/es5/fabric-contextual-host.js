@@ -51,7 +51,8 @@ var FabricContextualHost = (function (_super) {
     });
     Object.defineProperty(FabricContextualHost.prototype, "target", {
         get: function () { return this._target.element; },
-        set: function (value) { this._target.element = value; },
+        set: function (value) { if (this._target == null)
+            this._target = {}; this._target.element = value; },
         enumerable: true,
         configurable: true
     });
@@ -69,12 +70,16 @@ var FabricContextualHost = (function (_super) {
         configurable: true
     });
     FabricContextualHost.prototype.connectedCallback = function () {
+        console.log('connectedCallback');
         if (this._target.element == null) {
             var selector = this.getAttribute('host');
             if (selector) {
                 var target = this.closest(selector) || document.querySelector(selector);
                 if (target)
                     this.target = target;
+            }
+            else {
+                console.info('Could not find target');
             }
         }
         this.__setResizeDisposal();
