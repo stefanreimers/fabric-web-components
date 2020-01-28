@@ -239,8 +239,8 @@ window.customElements.define('fabric-breadcrumb', FabricBreadcrumb);
 (function (w, d) {
 
   let style = d.createElement('STYLE');
-  style.textContent = `fabric-breadcrumb .ms-Breadcrumb{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-
-webkit-font-smoothing:antialiased;margin:23px 0 1px}
+  style.textContent = `fabric-breadcrumb .ms-Breadcrumb{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
+    -webkit-font-smoothing:antialiased;margin:23px 0 1px}
 fabric-breadcrumb .ms-Breadcrumb.is-overflow .ms-Breadcrumb-overflow{display:inline-block;margin-right:-4px}
 fabric-breadcrumb .ms-Breadcrumb-chevron-alt{font-size:12px;color:#666;vertical-align:top;margin:13px 4px;line-height:1}
 fabric-breadcrumb .ms-Breadcrumb-chevron{font-size:16px;color:#999;vertical-align:top;margin:8px 4px;line-height:1}
