@@ -4,6 +4,7 @@ class FabricTextfield extends HTMLElement {
   private _modifier: string;
   private _disabled: boolean;
   private _required: boolean;
+  private _readonly: boolean;
   private _label: string;
   private _placeholder: string;
   private _description: string;
@@ -17,6 +18,7 @@ class FabricTextfield extends HTMLElement {
     this._modifier = '';
     this._disabled = false;
     this._required = false;
+    this._readonly = false;
     this._label = '';
     this._placeholder = '';
     this._description = '';
@@ -28,17 +30,20 @@ class FabricTextfield extends HTMLElement {
   get modifier() { return this._modifier; }
   get disabled() { return this._disabled; }
   get required() { return this._required; }
+  get readonly() { return this._readonly; }
   get label() { return this._label; }
   get placeholder() { return this._placeholder; }
   get description() { return this._description; }
   get type() { return this._type; }
   get name() { return this._name; }
   get value() { return this._value; }
+
   set modifier(value) { throw new RangeError('Modifier is a static property'); }
   set type(value) { throw new RangeError('Input type is a static property'); }
   set name(value) { this._name = value; this.__setProperties('name'); }
   set disabled(value) { this._disabled = !!value; this.__setProperties('disabled'); }
   set required(value) { this._required = !!value; this.__setProperties('required'); }
+  set readonly(value) { this._readonly = !!value; this.__setProperties('readonly'); }
   set label(value) { this._label = value; this.__setProperties('label'); }
   set placeholder(value) { this._placeholder = value; this.__setProperties('placeholder'); }
   set description(value) { this._description = value; this.__setProperties('description'); }
@@ -84,6 +89,14 @@ class FabricTextfield extends HTMLElement {
         }
         else {
           this._refs.container.classList.remove('is-required');
+        }
+      }
+      if (property == null || property === 'readonly') {
+        (<HTMLInputElement>this._refs.input).readOnly = this.readonly;
+        if(this.readonly === true){
+          (<HTMLInputElement>this._refs.input).setAttribute('readonly', 'readonly')
+        } else {
+          (<HTMLInputElement>this._refs.input).removeAttribute('readonly')
         }
       }
     }
@@ -155,6 +168,7 @@ class FabricTextfield extends HTMLElement {
     return [
       'disabled',
       'required',
+      'readonly',
       'label',
       'placeholder',
       'description',
@@ -187,7 +201,14 @@ customElements.define('fabric-textfield', FabricTextfield);
   styles.dataset.fabric = id;
   document.getElementsByTagName('head')[0].appendChild(styles);
   function _getStyles() {
-    return `fabric-textfield .ms-TextField.ms-TextField--multiline {
+    return `fabric-textfield:unresolved,
+    fabric-textfield:not(:defined),
+    fabric-textfield > *:not(.ms-TextField) {
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    fabric-textfield .ms-TextField.ms-TextField--multiline {
       height: 100%
     }
 
@@ -199,7 +220,7 @@ customElements.define('fabric-textfield', FabricTextfield);
       height: 100%
     }
 
-.ms-TextField {
+fabric-textfield .ms-TextField {
   font-family: 'Segoe UI WestEuropean', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
@@ -212,47 +233,51 @@ customElements.define('fabric-textfield', FabricTextfield);
   margin-bottom: 8px;
 }
 
-.ms-TextField .ms-Label:empty,
-.ms-TextField .ms-Label:empty::after,
-.ms-TextField .ms-TextField-description:empty {
+fabric-textfield .ms-TextField .ms-Label:empty,
+fabric-textfield .ms-TextField .ms-Label:empty::after,
+fabric-textfield .ms-TextField .ms-TextField-description:empty {
   display: none
 }
 
-.ms-TextField .ms-Label {
+fabric-textfield .ms-TextField .ms-Label {
   font-size: 14px;
   font-weight: 600;
   font-family: 'Segoe UI WestEuropean', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-.ms-TextField.is-disabled .ms-TextField-field {
+fabric-textfield .ms-TextField.is-disabled .ms-TextField-field {
   background-color: #f4f4f4;
   border-color: #f4f4f4;
   pointer-events: none;
   cursor: default;
 }
 
-.ms-TextField.is-disabled::-webkit-input-placeholder {
+fabric-textfield .ms-TextField.is-disabled::-webkit-input-placeholder {
   color: #a6a6a6;
 }
 
-.ms-TextField.is-disabled::-moz-placeholder {
+fabric-textfield .ms-TextField.is-disabled::-moz-placeholder {
   color: #a6a6a6;
 }
 
-.ms-TextField.is-disabled:-moz-placeholder {
+fabric-textfield .ms-TextField.is-disabled:-moz-placeholder {
   color: #a6a6a6;
 }
 
-.ms-TextField.is-disabled:-ms-input-placeholder {
+fabric-textfield .ms-TextField.is-disabled:-ms-input-placeholder {
   color: #a6a6a6;
+}
+
+fabric-textfield .ms-TextField-field[readonly]{
+  background: #fafafa;
 }
 
 fabric-textfield[required] .ms-Label::after {
   content: ' *';
   color: #a80000;
 } 
-.ms-TextField.is-required .ms-Label::after {
+fabric-textfield .ms-TextField.is-required .ms-Label::after {
   content: ' *';
   color: #a80000;
 }
