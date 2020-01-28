@@ -1,5 +1,5 @@
-# oba-office-ui-fabric
-Custom Elements v1 wrapper for Office UI Fabric JS
+# Fabric Web Components
+Custom Elements v1 wrapper for the Office UI Fabric JS components (retired by MS)
 
 # Get started
 Your browser must be capable of handling custom elements **v1**. If that's not the case there is a polyfill at the [Web Components repo](https://github.com/webcomponents/webcomponentsjs) which you can install by 
@@ -12,5 +12,5 @@ The legacy elements are self contained JavaScript files with built-in templates,
 To include an element into your page simply use a common script tag, e.g.
 
 ```html
-<script type="text/javascript" src="legacy/fabric-textfield.js"></script>
+<script type="text/javascript" src="dist/es5/fabric-textfield.js"></script>
 ```
