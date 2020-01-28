@@ -69,10 +69,10 @@ var FabricToggle = (function (_super) {
     Object.defineProperty(FabricToggle.prototype, "value", {
         get: function () {
             if (this._value == null) {
-                return (this._refs.label.classList.toggle("is-selected")) ? this._on : this._off;
+                return (this._refs.label.classList.contains("is-selected")) ? this._on : this._off;
             }
             else {
-                return (this._refs.label.classList.toggle("is-selected")) ? this._value : null;
+                return (this._refs.label.classList.contains("is-selected")) ? this._value : null;
             }
         },
         set: function (val) { if (val === this._value || this.disabled)

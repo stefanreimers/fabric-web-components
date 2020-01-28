@@ -39,10 +39,10 @@ class FabricToggle extends HTMLElement {
   get value() {
     if (this._value == null) {
       //@ts-ignore
-      return (this._refs.label.classList.toggle("is-selected")) ? this._on : this._off;
+      return (this._refs.label.classList.contains("is-selected")) ? this._on : this._off;
     } else {
       //@ts-ignore
-      return (this._refs.label.classList.toggle("is-selected")) ? this._value : null;
+      return (this._refs.label.classList.contains("is-selected")) ? this._value : null;
     }
   }
   set value(val) { if (val === this._value || this.disabled) return; this._value = val; }
