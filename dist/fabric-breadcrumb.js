@@ -69,16 +69,7 @@ class FabricBreadcrumb extends HTMLElement {
         if (!this._refs.container)
             return;
         if (property == null || property === 'items') {
-            this._refs.list.innerHTML = '';
-            var container = document.createElement('div');
-            (this._items || []).forEach(item => {
-                container.innerHTML = `
-                    <li class="ms-Breadcrumb-listItem">
-                    <a class="ms-Breadcrumb-itemLink">${item}</a> 
-                    <i class="ms-Breadcrumb-chevron chevron right ms-Icon ms-Icon--ChevronRight"></i>
-                    </li>`;
-                this._refs.list.appendChild(container.children[0]);
-            });
+            this._updateBreadcrumbs();
         }
     }
     static get observedAttributes() {
@@ -136,6 +127,11 @@ class FabricBreadcrumb extends HTMLElement {
                 n = parseInt(e.getAttribute("tabindex"), 10),
                 this._items.push({ link: i, tabIndex: n, text: t });
     }
+    _sanitize(html) {
+        const e = document.createElement('div');
+        e.innerText = html;
+        return e.innerHTML;
+    }
     _onResize() {
         this._closeOverflow(null),
             this._renderList();
@@ -174,17 +170,24 @@ class FabricBreadcrumb extends HTMLElement {
         var t = this._items.length - e;
         if (t = t < 0 ? 0 : t, t >= 0)
             for (t; t < this._items.length; t++) {
-                var i = document.createElement("li"), n = this._items[t], s = document.createElement("a"), o = document.createElement("i");
-                i.className = "ms-Breadcrumb-listItem",
-                    s.className = "ms-Breadcrumb-itemLink";
-                if (n.link)
-                    n.setAttribute("href", n.link);
-                s.setAttribute("tabindex", (this._tabIndex++).toString()),
-                    s.textContent = n.text,
-                    o.className = "ms-Breadcrumb-chevron ms-Icon chevron right ms-Icon--ChevronRight",
-                    i.appendChild(s),
-                    i.appendChild(o),
-                    this._refs.list.appendChild(i);
+                var n = this._items[t];
+                var container = document.createElement('div');
+                container.innerHTML = `
+        <li class="ms-Breadcrumb-listItem">
+          <a class="ms-Breadcrumb-itemLink" ${(n.link) ? 'href="' + n.link + '"' : ''}>${this._sanitize(n.text)}</a> 
+          <svg  class="ms-Breadcrumb-chevron chevron right ms-Icon ms-Icon--ChevronRight"
+          xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 12 12" height="12" width="12">
+            <g transform="translate(-6.7008429,-1035.2699)">
+              <g transform="matrix(0.24251286,0,0,0.24251286,-104.3292,905.33618)">
+                <path style="fill:#666666;stroke:none"
+                  d="m 497.44535,557.75486 -24.64454,24.64453 2.86328,2.86328 24.64454,-24.64453 -2.86328,-2.86328 z" />
+                <path style="fill:#666666;stroke:none"
+                  d="m 475.66409,535.7821 24.64454,24.64453 -2.86328,2.86328 -24.64454,-24.64453 2.86328,-2.86328 z" />
+              </g>
+            </g>
+          </svg>
+        </li>`;
+                this._refs.list.appendChild(container.children[0]);
             }
     }
 }
@@ -195,7 +198,7 @@ window.customElements.define('fabric-breadcrumb', FabricBreadcrumb);
     -webkit-font-smoothing:antialiased;margin:23px 0 1px}
 fabric-breadcrumb .ms-Breadcrumb.is-overflow .ms-Breadcrumb-overflow{display:inline-block;margin-right:-4px}
 fabric-breadcrumb .ms-Breadcrumb-chevron-alt{font-size:12px;color:#666;vertical-align:top;margin:13px 4px;line-height:1}
-fabric-breadcrumb .ms-Breadcrumb-chevron{font-size:16px;color:#999;vertical-align:top;margin:8px 4px;line-height:1}
+fabric-breadcrumb .ms-Breadcrumb-chevron{font-size:12px;height:12px;width:12px;color:#999;vertical-align:top;margin:11px 4px;line-height:1}
 fabric-breadcrumb .ms-Breadcrumb-list{display:inline;white-space:nowrap;padding:0;margin:0}
 fabric-breadcrumb .ms-Breadcrumb-list .ms-Breadcrumb-listItem{list-style-type:none;vertical-align:top;margin:0;padding:0;display:inline-block}
 fabric-breadcrumb .ms-Breadcrumb-list .ms-Breadcrumb-listItem:last-of-type .ms-Breadcrumb-chevron{display:none}
@@ -218,15 +221,15 @@ fabric-breadcrumb .ms-Breadcrumb-overflowButton:active{outline:transparent;backg
 fabric-breadcrumb .ms-Breadcrumb-itemLink{font-weight:100;font-size:21px;color:#333;display:inline-block;padding:0 4px;max-width:160px;white-space:nowrap;
 text-overflow:ellipsis;overflow:hidden;vertical-align:top}
 @media screen and (max-width:639px){
-    fabric-breadcrumb .ms-Breadcrumb{margin:10px 0}
-    fabric-breadcrumb .ms-Breadcrumb-itemLink{font-size:17px}
-    fabric-breadcrumb .ms-Breadcrumb-chevron{font-size:10px;margin:9px 3px}
-    fabric-breadcrumb .ms-Breadcrumb-overflow .ms-Breadcrumb-overflowButton{font-size:16px;padding:2px 0}
+  fabric-breadcrumb .ms-Breadcrumb{margin:10px 0}
+  fabric-breadcrumb .ms-Breadcrumb-itemLink{font-size:17px}
+  fabric-breadcrumb .ms-Breadcrumb-chevron{font-size:10px;height:10px;width:10px;margin:7px 3px}
+  fabric-breadcrumb .ms-Breadcrumb-overflow .ms-Breadcrumb-overflowButton{font-size:16px;padding:2px 0}
 }
 @media screen and (max-width:479px){
-    fabric-breadcrumb .ms-Breadcrumb-itemLink{font-size:14px;max-width:116px}
-    fabric-breadcrumb .ms-Breadcrumb-chevron{margin:5px 4px}
-    fabric-breadcrumb .ms-Breadcrumb-overflow .ms-Breadcrumb-overflowButton{padding:2px 4px}
+  fabric-breadcrumb .ms-Breadcrumb-itemLink{font-size:14px;max-width:116px}
+  fabric-breadcrumb .ms-Breadcrumb-chevron{margin:5px 3px}
+  fabric-breadcrumb .ms-Breadcrumb-overflow .ms-Breadcrumb-overflowButton{padding:2px 4px}
 }
 
 fabric-breadcrumb .chevron::before {
