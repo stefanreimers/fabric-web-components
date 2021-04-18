@@ -1,47 +1,74 @@
 "use strict";
-class FabricTags extends HTMLElement {
-    constructor() {
-        super();
-        this._refs = {};
-        this._disabled = false;
-        this._refs = {};
-        this._disabled = false;
-        this._value = null;
-        this._items = [];
-        this._uuid = this.__uuid();
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var FabricTags = (function (_super) {
+    __extends(FabricTags, _super);
+    function FabricTags() {
+        var _this_1 = _super.call(this) || this;
+        _this_1._refs = {};
+        _this_1._disabled = false;
+        _this_1._refs = {};
+        _this_1._disabled = false;
+        _this_1._value = null;
+        _this_1._items = [];
+        _this_1._uuid = _this_1.__uuid();
+        return _this_1;
     }
-    get disabled() { return this._disabled; }
-    set disabled(value) { if (this._disabled === !!value)
-        return; this._disabled = !!value; this.__setProperties('disabled'); }
-    get value() { return this._value; }
-    set value(val) { if (val === this._value)
-        return; this._value = val; this.__setProperties('value'); }
-    get items() { return this._items; }
-    set items(value) {
-        if (value == null)
-            value = [];
-        if (!Array.isArray(value))
-            value = [].concat(value);
-        this._items = value;
-        this.__setProperties('items');
-    }
-    connectedCallback() {
+    Object.defineProperty(FabricTags.prototype, "disabled", {
+        get: function () { return this._disabled; },
+        set: function (value) { if (this._disabled === !!value)
+            return; this._disabled = !!value; this.__setProperties('disabled'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricTags.prototype, "value", {
+        get: function () { return this._value; },
+        set: function (val) { if (val === this._value)
+            return; this._value = val; this.__setProperties('value'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricTags.prototype, "items", {
+        get: function () { return this._items; },
+        set: function (value) {
+            if (value == null)
+                value = [];
+            if (!Array.isArray(value))
+                value = [].concat(value);
+            this._items = value;
+            this.__setProperties('items');
+        },
+        enumerable: false,
+        configurable: true
+    });
+    FabricTags.prototype.connectedCallback = function () {
         this.__setupUI();
         this.__setProperties();
         this.__addListeners();
-    }
-    __setupUI() {
-        let markup = `<div class="tags">
-				<input list="${this._uuid}" tabindex="0"></input>
-			</div><datalist id="${this._uuid}"/>`;
+    };
+    FabricTags.prototype.__setupUI = function () {
+        var markup = "<div class=\"tags\">\n\t\t\t\t<input list=\"" + this._uuid + "\" tabindex=\"0\"></input>\n\t\t\t</div><datalist id=\"" + this._uuid + "\"/>";
         this.innerHTML = markup;
         this._refs = {
             container: this.querySelector('.tags'),
             input: this.querySelector('input'),
             datalist: this.querySelector('datalist')
         };
-    }
-    __setProperties(property) {
+    };
+    FabricTags.prototype.__setProperties = function (property) {
         if (!this._refs || !this._refs.container)
             return;
         if (property == null || property === 'disabled') {
@@ -53,8 +80,8 @@ class FabricTags extends HTMLElement {
         if (property == null || property === 'value') {
             this.__updateTagList();
         }
-    }
-    __addListeners() {
+    };
+    FabricTags.prototype.__addListeners = function () {
         this._onClickListener = this.__OnClickListener.bind(this);
         if (this._refs.container)
             this._refs.container.addEventListener('click', this._onClickListener);
@@ -67,48 +94,53 @@ class FabricTags extends HTMLElement {
                 this.value = '';
             }
         });
-    }
-    __OnClickListener(e) {
-        let target = e.target;
+    };
+    FabricTags.prototype.__OnClickListener = function (e) {
+        var target = e.target;
         if (target && target.classList.contains('delete')) {
-            let item = target.parentNode.parentNode;
+            var item = target.parentNode.parentNode;
             item.parentNode.removeChild(item);
             return;
         }
         this._refs.input.focus();
-    }
-    __addTag(value) {
+    };
+    FabricTags.prototype.__addTag = function (value) {
         if (!this._refs.container)
             return;
-        let item = document.createElement('div');
+        var item = document.createElement('div');
         item.classList.add('tagItem');
         item.innerHTML = '<span>' + value + ' <span class="delete">x</span></span>';
         this._refs.container.insertBefore(item, this._refs.input);
-    }
-    __updateTagList() {
-        [].forEach.call(this.querySelectorAll('.tagItem'), (item) => {
+    };
+    FabricTags.prototype.__updateTagList = function () {
+        var _this_1 = this;
+        [].forEach.call(this.querySelectorAll('.tagItem'), function (item) {
             item.parentNode.removeChild(item);
         });
-        [].concat(this.value).forEach((item) => {
-            this.__addTag(item);
+        [].concat(this.value).forEach(function (item) {
+            _this_1.__addTag(item);
         });
-    }
-    __updateItemList() {
+    };
+    FabricTags.prototype.__updateItemList = function () {
         if (!this._refs.datalist || !this._items)
             return;
-        let fragment = document.createElement('DIV');
-        this.items.forEach((item) => {
-            let option = document.createElement('OPTION');
+        var fragment = document.createElement('DIV');
+        this.items.forEach(function (item) {
+            var option = document.createElement('OPTION');
             option.innerText = item.toString();
             fragment.appendChild(option);
         });
         this._refs.datalist.innerHTML = fragment.innerHTML;
-    }
-    static get observedAttributes() {
-        return ['value', 'items', 'disabled'];
-    }
-    attributeChangedCallback(attr, oldValue, newValue) {
-        let n = (typeof this[attr] === 'boolean') ? this.hasAttribute(attr) : newValue;
+    };
+    Object.defineProperty(FabricTags, "observedAttributes", {
+        get: function () {
+            return ['value', 'items', 'disabled'];
+        },
+        enumerable: false,
+        configurable: true
+    });
+    FabricTags.prototype.attributeChangedCallback = function (attr, oldValue, newValue) {
+        var n = (typeof this[attr] === 'boolean') ? this.hasAttribute(attr) : newValue;
         if (oldValue === n || this[attr] === n)
             return;
         if (attr === 'disabled') {
@@ -116,52 +148,18 @@ class FabricTags extends HTMLElement {
             return;
         }
         this[attr] = (Array.isArray(newValue)) ? newValue : newValue.toString().split(',');
-    }
-    __uuid() {
+    };
+    FabricTags.prototype.__uuid = function () {
         function _() {
             return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
         }
         return _() + _() + '-' + _() + '-' + _() + '-' + _() + '-' + _() + _() + _();
-    }
-}
+    };
+    return FabricTags;
+}(HTMLElement));
 window.customElements.define('fabric-tags', FabricTags);
 (function (w, d) {
-    let style = d.createElement('STYLE');
-    style.textContent = `fabric-tags {
-display: inline-block;
-}
-fabric-tags .tags {
-	margin: auto;
-	max-width:100%;
-	border: 1px solid #EAEAEA;
-	min-height: 30px;
-	box-sizing: border-box;
-	display: flex;
-	flex-wrap: wrap;
-}
-fabric-tags .tagItem {
-	background-color: #F4F4F4;
-	margin: 1px;
-	height: 28px;
-	line-height: 28px;
-}
-fabric-tags .tagItem > span {
-	min-width: 20px;
-	display: inline-block;
-	margin: 0 8px;
-}
-fabric-tags .tagItem .delete {
-	cursor: pointer;
-}
-fabric-tags input {
-	min-height: 28px;
-	flex-grow: 1;
-	min-width: 1px;
-	max-width:100%; 
-	width: 1px;
-	padding: 0 6px;
-	margin: 1px;
-	border: none;
-}`;
+    var style = d.createElement('STYLE');
+    style.textContent = "fabric-tags {\ndisplay: inline-block;\n}\nfabric-tags .tags {\n\tmargin: auto;\n\tmax-width:100%;\n\tborder: 1px solid #EAEAEA;\n\tmin-height: 30px;\n\tbox-sizing: border-box;\n\tdisplay: flex;\n\tflex-wrap: wrap;\n}\nfabric-tags .tagItem {\n\tbackground-color: #F4F4F4;\n\tmargin: 1px;\n\theight: 28px;\n\tline-height: 28px;\n}\nfabric-tags .tagItem > span {\n\tmin-width: 20px;\n\tdisplay: inline-block;\n\tmargin: 0 8px;\n}\nfabric-tags .tagItem .delete {\n\tcursor: pointer;\n}\nfabric-tags input {\n\tmin-height: 28px;\n\tflex-grow: 1;\n\tmin-width: 1px;\n\tmax-width:100%; \n\twidth: 1px;\n\tpadding: 0 6px;\n\tmargin: 1px;\n\tborder: none;\n}";
     d.head.appendChild(style);
 })(window, document);

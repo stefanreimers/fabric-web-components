@@ -1,60 +1,95 @@
 "use strict";
-class FabricChoiceFieldGroup extends HTMLElement {
-    constructor() {
-        super(...arguments);
-        this._label = '';
-        this._name = '';
-        this._refs = {};
-        this._form = '';
-        this._disabled = false;
-        this._required = false;
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var FabricChoiceFieldGroup = (function (_super) {
+    __extends(FabricChoiceFieldGroup, _super);
+    function FabricChoiceFieldGroup() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this._label = '';
+        _this._name = '';
+        _this._refs = {};
+        _this._form = '';
+        _this._disabled = false;
+        _this._required = false;
+        return _this;
     }
-    get disabled() { return this._disabled || false; }
-    get required() { return this._required || false; }
-    get label() { return this._label; }
-    get name() { return this._name; }
-    get form() { return this._form; }
-    get value() {
-        var radios = this.querySelectorAll('fabric-radiobutton[name="' + this.name + '"]');
-        var selected = null;
-        if (radios && radios.length > 0) {
-            [].forEach.call(radios, (radio) => {
-                if (radio.checked === true)
-                    selected = radio.label;
-            });
-        }
-        return selected;
-    }
-    set disabled(value) { if (!!value === this._disabled)
-        return; this._disabled = !!value; this.__setProperties('disabled'); }
-    set required(value) { if (!!value === this._required)
-        return; this._required = !!value; this.__setProperties('required'); }
-    set label(value) { if (value === this._label)
-        return; this._label = value; this.__setProperties('label'); }
-    set form(value) { if (value === this._form)
-        return; this._form = value; this.__setProperties('form'); }
-    set name(value) { if (value === this._name)
-        return; this._name = value; }
-    set value(val) { this.__setProperties('value'); }
-    connectedCallback() {
+    Object.defineProperty(FabricChoiceFieldGroup.prototype, "disabled", {
+        get: function () { return this._disabled || false; },
+        set: function (value) { if (!!value === this._disabled)
+            return; this._disabled = !!value; this.__setProperties('disabled'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricChoiceFieldGroup.prototype, "required", {
+        get: function () { return this._required || false; },
+        set: function (value) { if (!!value === this._required)
+            return; this._required = !!value; this.__setProperties('required'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricChoiceFieldGroup.prototype, "label", {
+        get: function () { return this._label; },
+        set: function (value) { if (value === this._label)
+            return; this._label = value; this.__setProperties('label'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricChoiceFieldGroup.prototype, "name", {
+        get: function () { return this._name; },
+        set: function (value) { if (value === this._name)
+            return; this._name = value; },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricChoiceFieldGroup.prototype, "form", {
+        get: function () { return this._form; },
+        set: function (value) { if (value === this._form)
+            return; this._form = value; this.__setProperties('form'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricChoiceFieldGroup.prototype, "value", {
+        get: function () {
+            var radios = this.querySelectorAll('fabric-radiobutton[name="' + this.name + '"]');
+            var selected = null;
+            if (radios && radios.length > 0) {
+                [].forEach.call(radios, function (radio) {
+                    if (radio.checked === true)
+                        selected = radio.label;
+                });
+            }
+            return selected;
+        },
+        set: function (val) { this.__setProperties('value'); },
+        enumerable: false,
+        configurable: true
+    });
+    FabricChoiceFieldGroup.prototype.connectedCallback = function () {
         this.__setupUI();
         this.__setProperties();
         this.__addListeners();
-    }
-    __setupUI() {
-        let markup = `<div class="ms-ChoiceFieldGroup" role="radiogroup">
-			  <div class="ms-ChoiceFieldGroup-title">
-				<label class="ms-Label"></label>
-			  </div>
-			<ul class="ms-ChoiceFieldGroup-list">
-			</ul>
-			</div>`;
+    };
+    FabricChoiceFieldGroup.prototype.__setupUI = function () {
+        var markup = "<div class=\"ms-ChoiceFieldGroup\" role=\"radiogroup\">\n\t\t\t  <div class=\"ms-ChoiceFieldGroup-title\">\n\t\t\t\t<label class=\"ms-Label\"></label>\n\t\t\t  </div>\n\t\t\t<ul class=\"ms-ChoiceFieldGroup-list\">\n\t\t\t</ul>\n\t\t\t</div>";
         var fragment = document.createElement('DIV');
         fragment.innerHTML = markup;
         var radios = this.querySelectorAll('fabric-radiobutton[name="' + this.name + '"]');
         if (radios && radios.length > 0) {
             var list = fragment.querySelector('.ms-ChoiceFieldGroup-list');
-            [].forEach.call(radios, (radio) => {
+            [].forEach.call(radios, function (radio) {
                 list && list.appendChild(radio);
             });
         }
@@ -64,18 +99,18 @@ class FabricChoiceFieldGroup extends HTMLElement {
             label: this.querySelector('.ms-ChoiceFieldGroup-title > .ms-Label'),
             list: this.querySelector('.ms-ChoiceFieldGroup-list')
         };
-    }
-    __addListeners() {
+    };
+    FabricChoiceFieldGroup.prototype.__addListeners = function () {
         this._refs.list.addEventListener("fabricRadioSelect", this._onChangeHandler.bind(this), false);
-    }
-    _onChangeHandler(event) {
-        let name = event.detail.name;
-        let selectedChoice = event.detail.item;
+    };
+    FabricChoiceFieldGroup.prototype._onChangeHandler = function (event) {
+        var name = event.detail.name;
+        var selectedChoice = event.detail.item;
         if (this.name === name) {
             var _choiceFieldComponents = this._refs.list.querySelectorAll('fabric-radiobutton[name="' + this.name + '"]');
             if (!_choiceFieldComponents || _choiceFieldComponents.length === 0)
                 return;
-            [].forEach.call(_choiceFieldComponents, (item) => {
+            [].forEach.call(_choiceFieldComponents, function (item) {
                 if (item === selectedChoice) {
                     item.checked = true;
                 }
@@ -84,15 +119,16 @@ class FabricChoiceFieldGroup extends HTMLElement {
                 }
             });
         }
-    }
-    __setProperties(property) {
+    };
+    FabricChoiceFieldGroup.prototype.__setProperties = function (property) {
+        var _this = this;
         if (!this._refs.container)
             return;
         if (property == null || property === 'disabled') {
             var radios = this.querySelectorAll('fabric-radiobutton[name="' + this.name + '"]');
             if (radios && radios.length > 0) {
-                [].forEach.call(radios, (radio) => {
-                    radio.disabled = this.disabled;
+                [].forEach.call(radios, function (radio) {
+                    radio.disabled = _this.disabled;
                 });
             }
         }
@@ -110,26 +146,30 @@ class FabricChoiceFieldGroup extends HTMLElement {
                 this.removeAttribute('form');
             }
         }
-    }
-    static get observedAttributes() {
-        return ['disabled', 'requried', 'label', 'name', 'form'];
-    }
-    attributeChangedCallback(attr, oldValue, newValue) {
+    };
+    Object.defineProperty(FabricChoiceFieldGroup, "observedAttributes", {
+        get: function () {
+            return ['disabled', 'requried', 'label', 'name', 'form'];
+        },
+        enumerable: false,
+        configurable: true
+    });
+    FabricChoiceFieldGroup.prototype.attributeChangedCallback = function (attr, oldValue, newValue) {
         if (['disabled', 'required'].indexOf(attr) !== -1) {
             newValue = this.hasAttribute(attr);
         }
         if (oldValue === newValue || newValue === this[attr])
             return;
         this[attr] = newValue;
-    }
-    checkValidity() {
+    };
+    FabricChoiceFieldGroup.prototype.checkValidity = function () {
         return (!(this.required && this.value === null));
-    }
-}
+    };
+    return FabricChoiceFieldGroup;
+}(HTMLElement));
 window.customElements.define('fabric-choicefieldgroup', FabricChoiceFieldGroup);
 (function (w, d) {
-    let style = d.createElement('STYLE');
-    style.textContent = `.ms-ChoiceFieldGroup{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;margin-bottom:4px}
-.ms-ChoiceFieldGroup .ms-ChoiceFieldGroup-list{padding:0;margin:0;list-style:none}`;
+    var style = d.createElement('STYLE');
+    style.textContent = ".ms-ChoiceFieldGroup{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;margin-bottom:4px}\n.ms-ChoiceFieldGroup .ms-ChoiceFieldGroup-list{padding:0;margin:0;list-style:none}";
     d.head.appendChild(style);
 })(window, document);

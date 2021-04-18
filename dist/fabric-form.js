@@ -1,65 +1,118 @@
 "use strict";
-class FabricForm extends HTMLElement {
-    constructor() {
-        super();
-        this._name = '';
-        this._method = 'get';
-        this._novalidate = false;
-        this._action = '';
-        this._enctype = 'application/x-www-form-urlencoded';
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var FabricForm = (function (_super) {
+    __extends(FabricForm, _super);
+    function FabricForm() {
+        var _this = _super.call(this) || this;
+        _this._name = '';
+        _this._method = 'get';
+        _this._novalidate = false;
+        _this._action = '';
+        _this._enctype = 'application/x-www-form-urlencoded';
+        return _this;
     }
-    get name() { return this._name; }
-    get elements() {
-        const _elements = document.querySelectorAll('*[form="' + (this.name || this.id || '') + '"]');
-        const result = [];
-        if (_elements && _elements.length > 0) {
-            [].forEach.call(_elements, (element) => { result.push(element); });
-        }
-        return result;
-    }
-    get length() { return this.elements.length; }
-    get method() { return this._method; }
-    get novalidate() { return this._novalidate; }
-    get enctype() { return this._enctype; }
-    get encoding() { return this._enctype; }
-    get action() { return this._action; }
-    set elements(value) { throw new Error('Elements property cannot be set directly'); }
-    set length(value) { throw new Error('Length property cannot be set directly'); }
-    set name(value) { if (value === this._name)
-        return; this._name = value; }
-    set method(value) { let v = (['get', 'post', 'dialog'].indexOf(value.toLowerCase()) === -1) ? 'get' : value.toLowerCase(); if (v === this._method)
-        return; this._method = v; }
-    set novalidate(value) { if (this._novalidate === !!value)
-        return; this._novalidate = !!value; }
-    set enctype(value) {
-        this._enctype = ([
-            'application/x-www-form-urlencoded',
-            'multipart/form-data',
-            'text/plain'
-        ].indexOf(value.toLowerCase()) === -1) ? 'application/x-www-form-urlencoded' : value.toLowerCase();
-    }
-    set encoding(value) { this.enctype = value; }
-    set action(value) { if (value === this._action)
-        return; this._action = value; }
-    connectedCallback() {
+    Object.defineProperty(FabricForm.prototype, "name", {
+        get: function () { return this._name; },
+        set: function (value) { if (value === this._name)
+            return; this._name = value; },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricForm.prototype, "elements", {
+        get: function () {
+            var _elements = document.querySelectorAll('*[form="' + (this.name || this.id || '') + '"]');
+            var result = [];
+            if (_elements && _elements.length > 0) {
+                [].forEach.call(_elements, function (element) { result.push(element); });
+            }
+            return result;
+        },
+        set: function (value) { throw new Error('Elements property cannot be set directly'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricForm.prototype, "length", {
+        get: function () { return this.elements.length; },
+        set: function (value) { throw new Error('Length property cannot be set directly'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricForm.prototype, "method", {
+        get: function () { return this._method; },
+        set: function (value) { var v = (['get', 'post', 'dialog'].indexOf(value.toLowerCase()) === -1) ? 'get' : value.toLowerCase(); if (v === this._method)
+            return; this._method = v; },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricForm.prototype, "novalidate", {
+        get: function () { return this._novalidate; },
+        set: function (value) { if (this._novalidate === !!value)
+            return; this._novalidate = !!value; },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricForm.prototype, "enctype", {
+        get: function () { return this._enctype; },
+        set: function (value) {
+            this._enctype = ([
+                'application/x-www-form-urlencoded',
+                'multipart/form-data',
+                'text/plain'
+            ].indexOf(value.toLowerCase()) === -1) ? 'application/x-www-form-urlencoded' : value.toLowerCase();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricForm.prototype, "encoding", {
+        get: function () { return this._enctype; },
+        set: function (value) { this.enctype = value; },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricForm.prototype, "action", {
+        get: function () { return this._action; },
+        set: function (value) { if (value === this._action)
+            return; this._action = value; },
+        enumerable: false,
+        configurable: true
+    });
+    FabricForm.prototype.connectedCallback = function () {
         this.style.display = 'inline-block';
-    }
-    static get observedAttributes() {
-        return ['name', 'method', 'novalidate', 'enctype', 'encoding', 'action'];
-    }
-    attributeChangedCallback(attr, oldValue, newValue) {
-        let n = newValue;
+    };
+    Object.defineProperty(FabricForm, "observedAttributes", {
+        get: function () {
+            return ['name', 'method', 'novalidate', 'enctype', 'encoding', 'action'];
+        },
+        enumerable: false,
+        configurable: true
+    });
+    FabricForm.prototype.attributeChangedCallback = function (attr, oldValue, newValue) {
+        var n = newValue;
         if (typeof this[attr] === 'boolean') {
             n = this.hasAttribute(attr);
         }
         if (oldValue === n || n === this[attr])
             return;
         this[attr] = n;
-    }
-    values() {
+    };
+    FabricForm.prototype.values = function () {
         var values = {};
-        this.elements.forEach(el => {
-            let identifier = el.name || el.id;
+        this.elements.forEach(function (el) {
+            var identifier = el.name || el.id;
             if (identifier == null || identifier === '')
                 return;
             if (el.tagName === 'FABRIC-CHECKBOX') {
@@ -70,7 +123,7 @@ class FabricForm extends HTMLElement {
                         values[identifier].push(el.value);
                     }
                     else {
-                        let val = [values[identifier]];
+                        var val = [values[identifier]];
                         val.push(el.value);
                         values[identifier] = val;
                     }
@@ -84,31 +137,31 @@ class FabricForm extends HTMLElement {
             }
         });
         return values;
-    }
-    submit() {
+    };
+    FabricForm.prototype.submit = function () {
         if (this._novalidate === true || this.checkValidity()) {
-            const values = this.values();
+            var values_1 = this.values();
             if (this._action === null || this._action.trim() === '') {
-                return values;
+                return values_1;
             }
             else {
                 switch (this.method) {
                     case 'get':
                     case 'post':
-                        const params = (this.method === 'get') ? new URLSearchParams() : new FormData();
-                        Object.keys(values).forEach(p => {
-                            params.append(p, values[p] || '');
+                        var params_1 = (this.method === 'get') ? new URLSearchParams() : new FormData();
+                        Object.keys(values_1).forEach(function (p) {
+                            params_1.append(p, values_1[p] || '');
                         });
-                        let callOptions = { method: this.method };
+                        var callOptions = { method: this.method };
                         if (this.method === 'post') {
-                            Object.assign(callOptions, { body: params, headers: new Headers({ 'Content-Type': this.enctype }) });
+                            Object.assign(callOptions, { body: params_1, headers: new Headers({ 'Content-Type': this.enctype }) });
                         }
                         console.info('callOptions', callOptions);
-                        fetch((this.method === 'post') ? this.action : this.action + ((this.action.indexOf('?') > -1) ? '&' : '?') + params.toString(), callOptions)
-                            .then((result) => {
+                        fetch((this.method === 'post') ? this.action : this.action + ((this.action.indexOf('?') > -1) ? '&' : '?') + params_1.toString(), callOptions)
+                            .then(function (result) {
                             console.info(result);
                         })
-                            .catch(error => {
+                            .catch(function (error) {
                             console.error(error);
                         });
                         break;
@@ -121,11 +174,11 @@ class FabricForm extends HTMLElement {
             console.log('form checkValidity failed');
         }
         return null;
-    }
-    reset() {
-        this.elements.forEach(el => el.value = null);
-    }
-    checkValidity() {
+    };
+    FabricForm.prototype.reset = function () {
+        this.elements.forEach(function (el) { return el.value = null; });
+    };
+    FabricForm.prototype.checkValidity = function () {
         var _els = this.elements, _state = true;
         if (_els.length === 0)
             return true;
@@ -138,6 +191,7 @@ class FabricForm extends HTMLElement {
             }
         }
         return _state;
-    }
-}
+    };
+    return FabricForm;
+}(HTMLElement));
 window.customElements.define('fabric-form', FabricForm);

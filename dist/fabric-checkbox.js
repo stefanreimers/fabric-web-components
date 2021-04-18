@@ -1,49 +1,81 @@
 "use strict";
-class FabricCheckbox extends HTMLElement {
-    constructor() {
-        super();
-        this._label = '';
-        this._name = '';
-        this._refs = {};
-        this._form = '';
-        this._value = 'on';
-        this._disabled = false;
-        this._checked = false;
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var FabricCheckbox = (function (_super) {
+    __extends(FabricCheckbox, _super);
+    function FabricCheckbox() {
+        var _this = _super.call(this) || this;
+        _this._label = '';
+        _this._name = '';
+        _this._refs = {};
+        _this._form = '';
+        _this._value = 'on';
+        _this._disabled = false;
+        _this._checked = false;
+        return _this;
     }
-    get disabled() { return this._disabled || false; }
-    get checked() { return this._checked || false; }
-    get label() { return this._label; }
-    get name() { return this._name; }
-    get form() { return this._form; }
-    get value() { return this._value; }
-    set disabled(value) { if (!!value === this._disabled)
-        return; this._disabled = !!value; this.__setProperties('disabled'); }
-    set checked(value) { if (!!value === this._checked)
-        return; this._checked = !!value; this.__setProperties('checked'); }
-    set label(value) { if (value === this._label)
-        return; this._label = value; this.__setProperties('label'); }
-    set name(value) { if (value === this._name)
-        return; this._name = value; this.__setProperties('name'); }
-    set form(value) { if (value === this._form)
-        return; this._form = value; this.__setProperties('form'); }
-    set value(val) { if (val === this.value || this.disabled)
-        return; this._value = val; this.__setProperties('value'); }
-    connectedCallback() {
+    Object.defineProperty(FabricCheckbox.prototype, "disabled", {
+        get: function () { return this._disabled || false; },
+        set: function (value) { if (!!value === this._disabled)
+            return; this._disabled = !!value; this.__setProperties('disabled'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricCheckbox.prototype, "checked", {
+        get: function () { return this._checked || false; },
+        set: function (value) { if (!!value === this._checked)
+            return; this._checked = !!value; this.__setProperties('checked'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricCheckbox.prototype, "label", {
+        get: function () { return this._label; },
+        set: function (value) { if (value === this._label)
+            return; this._label = value; this.__setProperties('label'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricCheckbox.prototype, "name", {
+        get: function () { return this._name; },
+        set: function (value) { if (value === this._name)
+            return; this._name = value; this.__setProperties('name'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricCheckbox.prototype, "form", {
+        get: function () { return this._form; },
+        set: function (value) { if (value === this._form)
+            return; this._form = value; this.__setProperties('form'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricCheckbox.prototype, "value", {
+        get: function () { return this._value; },
+        set: function (val) { if (val === this.value || this.disabled)
+            return; this._value = val; this.__setProperties('value'); },
+        enumerable: false,
+        configurable: true
+    });
+    FabricCheckbox.prototype.connectedCallback = function () {
         this.__setupUI();
         this.__setProperties();
         this.__addListeners();
-    }
-    __setupUI() {
-        let markup = `<div class="ms-CheckBox"> 
-		  <input tabindex="-1" type="checkbox" class="ms-CheckBox-input">
-		  <label class="ms-CheckBox-field"
-			tabindex="0"
-			aria-checked="false"
-			name=""
-			aria-disabled="false">
-			<span class="ms-Label"></span>
-		  </label>
-		</div>`;
+    };
+    FabricCheckbox.prototype.__setupUI = function () {
+        var markup = "<div class=\"ms-CheckBox\"> \n\t\t  <input tabindex=\"-1\" type=\"checkbox\" class=\"ms-CheckBox-input\">\n\t\t  <label class=\"ms-CheckBox-field\"\n\t\t\ttabindex=\"0\"\n\t\t\taria-checked=\"false\"\n\t\t\tname=\"\"\n\t\t\taria-disabled=\"false\">\n\t\t\t<span class=\"ms-Label\"></span>\n\t\t  </label>\n\t\t</div>";
         this.innerHTML = markup;
         this._refs = {
             container: this.querySelector('.ms-CheckBox'),
@@ -51,31 +83,31 @@ class FabricCheckbox extends HTMLElement {
             field: this.querySelector('.ms-CheckBox-field'),
             label: this.querySelector('.ms-CheckBox-field > .ms-Label')
         };
-    }
-    __addListeners() {
+    };
+    FabricCheckbox.prototype.__addListeners = function () {
         if (this._refs.field) {
             this._refs.field.addEventListener("focus", this._onFocusHandler.bind(this), false);
             this._refs.field.addEventListener("blur", this.__onBlurHandler.bind(this), false);
             this._refs.field.addEventListener("click", this.__onClickHandler.bind(this), false);
             this._refs.field.addEventListener("keydown", this.__onKeydownHandler.bind(this), false);
         }
-    }
-    _onFocusHandler() {
+    };
+    FabricCheckbox.prototype._onFocusHandler = function () {
         if (this._refs.field)
             this._refs.field.classList.add("in-focus");
-    }
-    __onBlurHandler() {
+    };
+    FabricCheckbox.prototype.__onBlurHandler = function () {
         if (this._refs.field)
             this._refs.field.classList.remove("in-focus");
-    }
-    __onClickHandler(event) {
+    };
+    FabricCheckbox.prototype.__onClickHandler = function (event) {
         event.stopPropagation();
         event.preventDefault();
         if (!this._disabled) {
             this.toggle();
         }
-    }
-    __onKeydownHandler(event) {
+    };
+    FabricCheckbox.prototype.__onKeydownHandler = function (event) {
         if (event.keyCode === 32) {
             event.stopPropagation();
             event.preventDefault();
@@ -83,12 +115,12 @@ class FabricCheckbox extends HTMLElement {
                 this.toggle();
             }
         }
-    }
-    toggle() {
+    };
+    FabricCheckbox.prototype.toggle = function () {
         if (!this._disabled)
             this.checked = !this.checked;
-    }
-    __setProperties(property) {
+    };
+    FabricCheckbox.prototype.__setProperties = function (property) {
         if (!this._refs.container)
             return;
         if (property == null || property === 'disabled') {
@@ -118,51 +150,30 @@ class FabricCheckbox extends HTMLElement {
                 this.removeAttribute('form');
             }
         }
-    }
-    static get observedAttributes() {
-        return ['disabled', 'checked', 'label', 'name', 'form', 'value'];
-    }
-    attributeChangedCallback(attr, oldValue, newValue) {
+    };
+    Object.defineProperty(FabricCheckbox, "observedAttributes", {
+        get: function () {
+            return ['disabled', 'checked', 'label', 'name', 'form', 'value'];
+        },
+        enumerable: false,
+        configurable: true
+    });
+    FabricCheckbox.prototype.attributeChangedCallback = function (attr, oldValue, newValue) {
         if (['disabled', 'checked'].indexOf(attr) !== -1) {
             newValue = this.hasAttribute(attr);
         }
         if (oldValue === newValue || newValue === this[attr])
             return;
         this[attr] = newValue;
-    }
-    checkValidity() {
+    };
+    FabricCheckbox.prototype.checkValidity = function () {
         return (this._refs.input) ? this._refs.input.checkValidity() : false;
-    }
-}
+    };
+    return FabricCheckbox;
+}(HTMLElement));
 window.customElements.define('fabric-checkbox', FabricCheckbox);
 (function (w, d) {
-    let style = d.createElement('STYLE');
-    style.textContent = `.ms-CheckBox{box-sizing:border-box;color:#333;font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;font-size:14px;font-weight:400;min-height:36px;position:relative}
-.ms-CheckBox .ms-Label{font-size:14px;padding:0 0 0 26px;cursor:pointer;display:inline-block}
-.ms-CheckBox-input{position:absolute;opacity:0}
-.ms-CheckBox-field:before{content:"";display:inline-block;border:2px solid #a6a6a6;width:20px;height:20px;cursor:pointer;font-weight:400;position:absolute;box-sizing:border-box;transition-property:background,border,border-color;transition-duration:.2s;transition-timing-function:cubic-bezier(.4,0,.23,1)}
-.ms-CheckBox-field:after{content:"✓";display:none;position:absolute;font-weight:900;background-color:transparent;font-size:14px;top:0;color:#fff;line-height:20px;width:20px;text-align:center}
-@media screen and (-ms-high-contrast:active){.ms-CheckBox-field:after{color:#000}}
-@media screen and (-ms-high-contrast:black-on-white){.ms-CheckBox-field:after{color:#fff}}
-.ms-CheckBox-field{display:inline-block;cursor:pointer;margin-top:8px;position:relative;outline:0;vertical-align:top}
-.ms-CheckBox-field:focus:before,.ms-CheckBox-field:hover:before{border-color:#767676}
-.ms-CheckBox-field:focus .ms-Label,.ms-CheckBox-field:hover .ms-Label{color:#000}
-.ms-CheckBox-field.is-disabled{cursor:default}
-.ms-CheckBox-field.is-disabled:before{background-color:#c8c8c8;border-color:#c8c8c8;color:#c8c8c8}
-@media screen and (-ms-high-contrast:active){.ms-CheckBox-field.is-disabled:before{border-color:#0f0}}
-@media screen and (-ms-high-contrast:black-on-white){.ms-CheckBox-field.is-disabled:before{border-color:#600000}}
-.ms-CheckBox-field.is-disabled .ms-Label{color:#a6a6a6}
-@media screen and (-ms-high-contrast:active){.ms-CheckBox-field.is-disabled .ms-Label{color:#0f0}}
-@media screen and (-ms-high-contrast:black-on-white){.ms-CheckBox-field.is-disabled .ms-Label{color:#600000}}
-.ms-CheckBox-field.in-focus:before{border-color:#767676}
-.ms-CheckBox-field.in-focus.is-disabled:before{border-color:#c8c8c8}
-.ms-CheckBox-field.in-focus.is-checked:before{border-color:#106ebe}
-.ms-CheckBox-field.is-checked:before{border:10px solid #0078d7;background-color:#0078d7}
-@media screen and (-ms-high-contrast:active){.ms-CheckBox-field.is-checked:before{border-color:#1aebff}
-}
-@media screen and (-ms-high-contrast:black-on-white){.ms-CheckBox-field.is-checked:before{border-color:#37006e}
-}
-.ms-CheckBox-field.is-checked:after{display:block}
-.ms-CheckBox-field.is-checked:focus:before,.ms-CheckBox-field.is-checked:hover:before{border-color:#106ebe}`;
+    var style = d.createElement('STYLE');
+    style.textContent = ".ms-CheckBox{box-sizing:border-box;color:#333;font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;font-size:14px;font-weight:400;min-height:36px;position:relative}\n.ms-CheckBox .ms-Label{font-size:14px;padding:0 0 0 26px;cursor:pointer;display:inline-block}\n.ms-CheckBox-input{position:absolute;opacity:0}\n.ms-CheckBox-field:before{content:\"\";display:inline-block;border:2px solid #a6a6a6;width:20px;height:20px;cursor:pointer;font-weight:400;position:absolute;box-sizing:border-box;transition-property:background,border,border-color;transition-duration:.2s;transition-timing-function:cubic-bezier(.4,0,.23,1)}\n.ms-CheckBox-field:after{content:\"\u2713\";display:none;position:absolute;font-weight:900;background-color:transparent;font-size:14px;top:0;color:#fff;line-height:20px;width:20px;text-align:center}\n@media screen and (-ms-high-contrast:active){.ms-CheckBox-field:after{color:#000}}\n@media screen and (-ms-high-contrast:black-on-white){.ms-CheckBox-field:after{color:#fff}}\n.ms-CheckBox-field{display:inline-block;cursor:pointer;margin-top:8px;position:relative;outline:0;vertical-align:top}\n.ms-CheckBox-field:focus:before,.ms-CheckBox-field:hover:before{border-color:#767676}\n.ms-CheckBox-field:focus .ms-Label,.ms-CheckBox-field:hover .ms-Label{color:#000}\n.ms-CheckBox-field.is-disabled{cursor:default}\n.ms-CheckBox-field.is-disabled:before{background-color:#c8c8c8;border-color:#c8c8c8;color:#c8c8c8}\n@media screen and (-ms-high-contrast:active){.ms-CheckBox-field.is-disabled:before{border-color:#0f0}}\n@media screen and (-ms-high-contrast:black-on-white){.ms-CheckBox-field.is-disabled:before{border-color:#600000}}\n.ms-CheckBox-field.is-disabled .ms-Label{color:#a6a6a6}\n@media screen and (-ms-high-contrast:active){.ms-CheckBox-field.is-disabled .ms-Label{color:#0f0}}\n@media screen and (-ms-high-contrast:black-on-white){.ms-CheckBox-field.is-disabled .ms-Label{color:#600000}}\n.ms-CheckBox-field.in-focus:before{border-color:#767676}\n.ms-CheckBox-field.in-focus.is-disabled:before{border-color:#c8c8c8}\n.ms-CheckBox-field.in-focus.is-checked:before{border-color:#106ebe}\n.ms-CheckBox-field.is-checked:before{border:10px solid #0078d7;background-color:#0078d7}\n@media screen and (-ms-high-contrast:active){.ms-CheckBox-field.is-checked:before{border-color:#1aebff}\n}\n@media screen and (-ms-high-contrast:black-on-white){.ms-CheckBox-field.is-checked:before{border-color:#37006e}\n}\n.ms-CheckBox-field.is-checked:after{display:block}\n.ms-CheckBox-field.is-checked:focus:before,.ms-CheckBox-field.is-checked:hover:before{border-color:#106ebe}";
     d.head.appendChild(style);
 })(window, document);

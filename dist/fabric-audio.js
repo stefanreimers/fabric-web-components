@@ -1,60 +1,51 @@
 "use strict";
-class FabricAudio extends HTMLElement {
-    constructor() {
-        super();
-        this._refs = {};
-        this._src = '';
-        this._disabled = false;
-        this.speeds = [1, 1.5, 2, 2.5, 3];
-        this.currentSpeedIdx = 0;
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var FabricAudio = (function (_super) {
+    __extends(FabricAudio, _super);
+    function FabricAudio() {
+        var _this_1 = _super.call(this) || this;
+        _this_1._refs = {};
+        _this_1._src = '';
+        _this_1._disabled = false;
+        _this_1.speeds = [1, 1.5, 2, 2.5, 3];
+        _this_1.currentSpeedIdx = 0;
+        return _this_1;
     }
-    get disabled() { return this._disabled; }
-    set disabled(value) { if (this._disabled === !!value)
-        return; this._disabled = !!value; this.__setProperties('disabled'); }
-    get src() { return this._src; }
-    set src(val) { if (val === this._src)
-        return; this._src = val; this.__setProperties('src'); }
-    connectedCallback() {
+    Object.defineProperty(FabricAudio.prototype, "disabled", {
+        get: function () { return this._disabled; },
+        set: function (value) { if (this._disabled === !!value)
+            return; this._disabled = !!value; this.__setProperties('disabled'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricAudio.prototype, "src", {
+        get: function () { return this._src; },
+        set: function (val) { if (val === this._src)
+            return; this._src = val; this.__setProperties('src'); },
+        enumerable: false,
+        configurable: true
+    });
+    FabricAudio.prototype.connectedCallback = function () {
         this.__setupUI();
         this.__setProperties();
         this.__addListeners();
-    }
-    __setupUI() {
-        let markup = `<svg style="display: none;">
-    <symbol id="icon-play" viewBox="0 0 32 32">
-      <path fill="currentColor" d="M4 4 L28 16 L4 28 z "></path>
-    </symbol>
-    <symbol id="icon-pause" viewBox="0 0 32 32">
-      <path d="M4 4 H12 V28 H4 z M20 4 H28 V28 H20 z "></path>
-    </symbol>
-    <symbol id="icon-rewind" viewBox="0 0 32 32">
-      <path d="M4 4 H8 V14 L28 4 V28 L8 18 V28 H4 z "></path>
-    </symbol>
-    <symbol id="icon-speaker-unmuted" viewBox="0 0 32 32">
-      <path d="M2 12 L8 12 L16 6 L16 26 L8 20 L2 20 z M32 16 A16 16 0 0 1 27.25 27.375 L25.25 25.25 A13 13 0 0 0 29 16 A13 13 0 0 0 25.25 6.75 L27.25 4.625 A16 16 0 0 1 32 16 M25 16 A9 9 0 0 1 22.375 22.375 L20.25 20.25 A6 6 0 0 0 22 16 A6 6 0 0 0 20.25 11.75 L22.375 9.625 A9 9 0 0 1 25 16  "></path>
-    </symbol>
-    <symbol id="icon-speaker-muted" viewBox="0 0 32 32">
-      <path d="M2 12 L8 12 L16 6 L16 26 L8 20 L2 20 z  "></path>
-    </symbol>
-  </svg>
-  <audio src=""></audio>
-  <div class="podcast-player">
-    <button class="button-play" aria-label="Play">
-      <svg class="play"><use xlink:href="#icon-play"></use></svg>
-      <svg class="pause"><use xlink:href="#icon-pause"></use></svg>
-    </button>
-    <button class="button-rewind" aria-label="Rewind">
-      <svg><use xlink:href="#icon-rewind"></use></svg>
-    </button>
-    <span class="currenttime time">00:00</span>
-    <progress class="progress-meter" value="0"></progress>
-    <span class="duration time">00:00</span>
-    <button class="button-speed">1</button>
-    <button class="button-mute" aria-label="Mute">
-      <svg class="unmuted"><use xlink:href="#icon-speaker-unmuted"></use></svg>
-      <svg class="muted"><use xlink:href="#icon-speaker-muted"></use></svg>
-    </button>
-  </div>`;
+    };
+    FabricAudio.prototype.__setupUI = function () {
+        var markup = "<svg style=\"display: none;\">\n    <symbol id=\"icon-play\" viewBox=\"0 0 32 32\">\n      <path fill=\"currentColor\" d=\"M4 4 L28 16 L4 28 z \"></path>\n    </symbol>\n    <symbol id=\"icon-pause\" viewBox=\"0 0 32 32\">\n      <path d=\"M4 4 H12 V28 H4 z M20 4 H28 V28 H20 z \"></path>\n    </symbol>\n    <symbol id=\"icon-rewind\" viewBox=\"0 0 32 32\">\n      <path d=\"M4 4 H8 V14 L28 4 V28 L8 18 V28 H4 z \"></path>\n    </symbol>\n    <symbol id=\"icon-speaker-unmuted\" viewBox=\"0 0 32 32\">\n      <path d=\"M2 12 L8 12 L16 6 L16 26 L8 20 L2 20 z M32 16 A16 16 0 0 1 27.25 27.375 L25.25 25.25 A13 13 0 0 0 29 16 A13 13 0 0 0 25.25 6.75 L27.25 4.625 A16 16 0 0 1 32 16 M25 16 A9 9 0 0 1 22.375 22.375 L20.25 20.25 A6 6 0 0 0 22 16 A6 6 0 0 0 20.25 11.75 L22.375 9.625 A9 9 0 0 1 25 16  \"></path>\n    </symbol>\n    <symbol id=\"icon-speaker-muted\" viewBox=\"0 0 32 32\">\n      <path d=\"M2 12 L8 12 L16 6 L16 26 L8 20 L2 20 z  \"></path>\n    </symbol>\n  </svg>\n  <audio src=\"\"></audio>\n  <div class=\"podcast-player\">\n    <button class=\"button-play\" aria-label=\"Play\">\n      <svg class=\"play\"><use xlink:href=\"#icon-play\"></use></svg>\n      <svg class=\"pause\"><use xlink:href=\"#icon-pause\"></use></svg>\n    </button>\n    <button class=\"button-rewind\" aria-label=\"Rewind\">\n      <svg><use xlink:href=\"#icon-rewind\"></use></svg>\n    </button>\n    <span class=\"currenttime time\">00:00</span>\n    <progress class=\"progress-meter\" value=\"0\"></progress>\n    <span class=\"duration time\">00:00</span>\n    <button class=\"button-speed\">1</button>\n    <button class=\"button-mute\" aria-label=\"Mute\">\n      <svg class=\"unmuted\"><use xlink:href=\"#icon-speaker-unmuted\"></use></svg>\n      <svg class=\"muted\"><use xlink:href=\"#icon-speaker-muted\"></use></svg>\n    </button>\n  </div>";
         this.innerHTML = markup;
         this._refs = {
             container: this,
@@ -67,54 +58,55 @@ class FabricAudio extends HTMLElement {
             currentTime: this.querySelector('.currenttime'),
             duration: this.querySelector('.duration')
         };
-    }
-    __setProperties(property) {
+    };
+    FabricAudio.prototype.__setProperties = function (property) {
         if (!this._refs || !this._refs.container)
             return;
         if (property == null || property === 'src') {
             if (this._refs.audio)
                 this._refs.audio.src = this._src;
         }
-    }
-    __addListeners() {
+    };
+    FabricAudio.prototype.__addListeners = function () {
+        var _this_1 = this;
         if (this._refs.audio) {
-            this._refs.audio.addEventListener('loadedmetadata', () => {
-                this._refs.progress.setAttribute('max', Math.floor(this._refs.audio.duration));
-                this._refs.duration.textContent = this.__toHHMMSS(this._refs.audio.duration);
+            this._refs.audio.addEventListener('loadedmetadata', function () {
+                _this_1._refs.progress.setAttribute('max', Math.floor(_this_1._refs.audio.duration));
+                _this_1._refs.duration.textContent = _this_1.__toHHMMSS(_this_1._refs.audio.duration);
             });
-            this._refs.audio.addEventListener('timeupdate', () => {
-                this._refs.progress.setAttribute('value', this._refs.audio.currentTime);
-                this._refs.currentTime.textContent = this.__toHHMMSS(this._refs.audio.currentTime);
+            this._refs.audio.addEventListener('timeupdate', function () {
+                _this_1._refs.progress.setAttribute('value', _this_1._refs.audio.currentTime);
+                _this_1._refs.currentTime.textContent = _this_1.__toHHMMSS(_this_1._refs.audio.currentTime);
             });
         }
-        this._refs.play.addEventListener('click', () => {
-            if (this._refs.audio.paused) {
-                this._refs.audio.play();
+        this._refs.play.addEventListener('click', function () {
+            if (_this_1._refs.audio.paused) {
+                _this_1._refs.audio.play();
             }
             else {
-                this._refs.audio.pause();
+                _this_1._refs.audio.pause();
             }
-            this.classList.toggle('is-playing');
+            _this_1.classList.toggle('is-playing');
         });
-        this._refs.mute.addEventListener('click', () => {
-            if (this._refs.audio.muted) {
-                this._refs.audio.muted = false;
+        this._refs.mute.addEventListener('click', function () {
+            if (_this_1._refs.audio.muted) {
+                _this_1._refs.audio.muted = false;
             }
             else {
-                this._refs.audio.muted = true;
+                _this_1._refs.audio.muted = true;
             }
-            this.classList.toggle('is-muted');
+            _this_1.classList.toggle('is-muted');
         });
-        this._refs.rewind.addEventListener('click', () => {
-            this._refs.audio.currentTime -= 30;
+        this._refs.rewind.addEventListener('click', function () {
+            _this_1._refs.audio.currentTime -= 30;
         }, false);
-        this._refs.speed.addEventListener('click', (e) => {
-            this.currentSpeedIdx = this.currentSpeedIdx + 1 < this.speeds.length ? this.currentSpeedIdx + 1 : 0;
-            this._refs.audio.playbackRate = this.speeds[this.currentSpeedIdx];
-            e.target.textContent = "" + this.speeds[this.currentSpeedIdx];
+        this._refs.speed.addEventListener('click', function (e) {
+            _this_1.currentSpeedIdx = _this_1.currentSpeedIdx + 1 < _this_1.speeds.length ? _this_1.currentSpeedIdx + 1 : 0;
+            _this_1._refs.audio.playbackRate = _this_1.speeds[_this_1.currentSpeedIdx];
+            e.target.textContent = "" + _this_1.speeds[_this_1.currentSpeedIdx];
             return true;
         }, false);
-        const _this = this;
+        var _this = this;
         this._refs.progress.addEventListener('click', function (e) {
             if (!e.target)
                 return;
@@ -125,110 +117,35 @@ class FabricAudio extends HTMLElement {
                 console.log(error, e, Math.floor(_this._refs.audio.duration || 0.00) * (e.offsetX / e.target.offsetWidth));
             }
         }, false);
-    }
-    static get observedAttributes() {
-        return ['src'];
-    }
-    attributeChangedCallback(attr, oldValue, newValue) {
+    };
+    Object.defineProperty(FabricAudio, "observedAttributes", {
+        get: function () {
+            return ['src'];
+        },
+        enumerable: false,
+        configurable: true
+    });
+    FabricAudio.prototype.attributeChangedCallback = function (attr, oldValue, newValue) {
         if (oldValue != newValue)
             this[attr] = newValue;
-    }
-    __toHHMMSS(totalsecs) {
+    };
+    FabricAudio.prototype.__toHHMMSS = function (totalsecs) {
         var sec_num = parseInt(totalsecs, 10);
         var hours = Math.floor(sec_num / 3600);
         var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
         var seconds = sec_num - (hours * 3600) - (minutes * 60);
-        let sHours = (hours < 10) ? "0" + hours : "" + hours;
-        let sMinutes = (minutes < 10) ? "0" + minutes : "" + minutes;
-        let sSeconds = (seconds < 10) ? "0" + seconds : "" + seconds;
+        var sHours = (hours < 10) ? "0" + hours : "" + hours;
+        var sMinutes = (minutes < 10) ? "0" + minutes : "" + minutes;
+        var sSeconds = (seconds < 10) ? "0" + seconds : "" + seconds;
         sHours = sHours !== "0" ? sHours + ':' : '';
         sMinutes = sMinutes + ':';
         return sHours + sMinutes + sSeconds;
-    }
-}
+    };
+    return FabricAudio;
+}(HTMLElement));
 window.customElements.define('fabric-audio', FabricAudio);
 (function (w, d) {
-    let style = d.createElement('STYLE');
-    style.textContent = `fabric-audio { display: inline-block}
-fabric-audio .podcast-player {
-    display: flex;
-    width:100%;
-    align-items: center;
-    justify-contents: space-between;
-    flex-wrap: nowrap;
-    font-family: sans-serif;
-    font-size: 12px;
-    line-height: 15px;
-
-  }
-
-  fabric-audio .podcast-player > button,
-  fabric-audio .podcast-player > span,
-  fabric-audio .podcast-player > progress {
-    margin-right: 0.5em;
-  }
-
-  fabric-audio .podcast-player button:last-of-type {
-    margin-right: 0;
-  }
-
-  fabric-audio .podcast-player progress {
-    flex:1;
-    cursor: pointer;
-	height: 5px;
-	border: 0;
-  }
-  
-  fabric-audio progress::-moz-progress-bar {
-	background-color: #0078d7  
-  }
-
-  fabric-audio .podcast-player button {
-    -webkit-appearance: none;
-    font-size: 15px;
-    min-width: 26px;
-    padding: 4px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    cursor: pointer;
-    background-color: transparent;
-  }
-
-  fabric-audio .podcast-player button svg {
-    width: 0.8em;
-    height: 0.8em;
-  }
-
-  /* Speed */
-  fabric-audio .podcast-player .button-speed {
-    font-size: 12px;
-    min-width: 3em;
-  }
-
-  fabric-audio .podcast-player .button-speed:after {
-    content: 'x';
-  }
-
-  /* Play/Pause */
-  .button-play .pause {
-    display: none;
-  }
-  .is-playing .button-play .pause {
-    display: inline;
-  }
-  .is-playing .button-play .play {
-    display: none;
-  }
-  /* Mute/Unmute */
-  .button-mute .muted {
-    display: none;
-  }
-  .is-muted .button-mute .muted {
-    display: inline;
-  }
-  .is-muted .button-mute .unmuted {
-    display: none;
-  }
-`;
+    var style = d.createElement('STYLE');
+    style.textContent = "fabric-audio { display: inline-block}\nfabric-audio .podcast-player {\n    display: flex;\n    width:100%;\n    align-items: center;\n    justify-contents: space-between;\n    flex-wrap: nowrap;\n    font-family: sans-serif;\n    font-size: 12px;\n    line-height: 15px;\n\n  }\n\n  fabric-audio .podcast-player > button,\n  fabric-audio .podcast-player > span,\n  fabric-audio .podcast-player > progress {\n    margin-right: 0.5em;\n  }\n\n  fabric-audio .podcast-player button:last-of-type {\n    margin-right: 0;\n  }\n\n  fabric-audio .podcast-player progress {\n    flex:1;\n    cursor: pointer;\n\theight: 5px;\n\tborder: 0;\n  }\n  \n  fabric-audio progress::-moz-progress-bar {\n\tbackground-color: #0078d7  \n  }\n\n  fabric-audio .podcast-player button {\n    -webkit-appearance: none;\n    font-size: 15px;\n    min-width: 26px;\n    padding: 4px;\n    border: 1px solid #ccc;\n    border-radius: 3px;\n    cursor: pointer;\n    background-color: transparent;\n  }\n\n  fabric-audio .podcast-player button svg {\n    width: 0.8em;\n    height: 0.8em;\n  }\n\n  /* Speed */\n  fabric-audio .podcast-player .button-speed {\n    font-size: 12px;\n    min-width: 3em;\n  }\n\n  fabric-audio .podcast-player .button-speed:after {\n    content: 'x';\n  }\n\n  /* Play/Pause */\n  .button-play .pause {\n    display: none;\n  }\n  .is-playing .button-play .pause {\n    display: inline;\n  }\n  .is-playing .button-play .play {\n    display: none;\n  }\n  /* Mute/Unmute */\n  .button-mute .muted {\n    display: none;\n  }\n  .is-muted .button-mute .muted {\n    display: inline;\n  }\n  .is-muted .button-mute .unmuted {\n    display: none;\n  }\n";
     d.head.appendChild(style);
 })(window, document);

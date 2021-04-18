@@ -1,68 +1,102 @@
 "use strict";
-class FabricTabs extends HTMLElement {
-    constructor() {
-        super();
-        this._links = [];
-        this._tabs = false;
-        this._large = false;
-        this._ellipsis = false;
-        this._selected = null;
-        this._refs = {};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var FabricTabs = (function (_super) {
+    __extends(FabricTabs, _super);
+    function FabricTabs() {
+        var _this = _super.call(this) || this;
+        _this._links = [];
+        _this._tabs = false;
+        _this._large = false;
+        _this._ellipsis = false;
+        _this._selected = null;
+        _this._refs = {};
+        return _this;
     }
-    get links() { return this._links; }
-    set links(value) { if (JSON.stringify(value) === JSON.stringify(this._links))
-        return; this._links = value; this.__setProperties('links'); }
-    get selected() { return this._selected; }
-    set selected(value) {
-        if (value === this.selected)
-            return;
-        this._selected = value;
-        this.__setProperties('selected');
-        try {
-            this.dispatchEvent(new CustomEvent('onTabSelected', {
-                bubbles: true,
-                cancelable: true,
-                detail: {
-                    selected: this._selected
-                }
-            }));
-        }
-        catch (e) {
-            var evt = document.createEvent("CustomEvent");
-            evt.initCustomEvent('onTabSelected', true, true, {
-                'selected': this._selected
-            });
-            this.dispatchEvent(evt);
-        }
-    }
-    get tabs() { return this._tabs; }
-    get large() { return this._large; }
-    get ellipsis() { return this._ellipsis; }
-    set tabs(value) { if (!!value === this._tabs)
-        return; this._tabs = value; this.__setProperties('tabs'); }
-    set large(value) { if (!!value === this._large)
-        return; this._large = value; this.__setProperties('large'); }
-    set ellipsis(value) { if (!!value === this._ellipsis)
-        return; this._ellipsis = value; this.__setProperties('ellipsis'); }
-    connectedCallback() {
+    Object.defineProperty(FabricTabs.prototype, "links", {
+        get: function () { return this._links; },
+        set: function (value) { if (JSON.stringify(value) === JSON.stringify(this._links))
+            return; this._links = value; this.__setProperties('links'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricTabs.prototype, "selected", {
+        get: function () { return this._selected; },
+        set: function (value) {
+            if (value === this.selected)
+                return;
+            this._selected = value;
+            this.__setProperties('selected');
+            try {
+                this.dispatchEvent(new CustomEvent('onTabSelected', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        selected: this._selected
+                    }
+                }));
+            }
+            catch (e) {
+                var evt = document.createEvent("CustomEvent");
+                evt.initCustomEvent('onTabSelected', true, true, {
+                    'selected': this._selected
+                });
+                this.dispatchEvent(evt);
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricTabs.prototype, "tabs", {
+        get: function () { return this._tabs; },
+        set: function (value) { if (!!value === this._tabs)
+            return; this._tabs = value; this.__setProperties('tabs'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricTabs.prototype, "large", {
+        get: function () { return this._large; },
+        set: function (value) { if (!!value === this._large)
+            return; this._large = value; this.__setProperties('large'); },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FabricTabs.prototype, "ellipsis", {
+        get: function () { return this._ellipsis; },
+        set: function (value) { if (!!value === this._ellipsis)
+            return; this._ellipsis = value; this.__setProperties('ellipsis'); },
+        enumerable: false,
+        configurable: true
+    });
+    FabricTabs.prototype.connectedCallback = function () {
         this.__setupUI();
         this.__setProperties();
         this.__addListeners();
-    }
-    __setupUI() {
-        let markup = `<div class="ms-Tabs">
-		  <ul class="ms-Tabs-links">
-			<li class="ms-Tabs-link ms-Tabs-ellipsis hidden" tabindex="1"><i>…</i></li>
-		  </ul>
-		</div>`;
+    };
+    FabricTabs.prototype.__setupUI = function () {
+        var markup = "<div class=\"ms-Tabs\">\n\t\t  <ul class=\"ms-Tabs-links\">\n\t\t\t<li class=\"ms-Tabs-link ms-Tabs-ellipsis hidden\" tabindex=\"1\"><i>\u2026</i></li>\n\t\t  </ul>\n\t\t</div>";
         this.innerHTML = markup;
         this._refs = {
             container: this.querySelector('.ms-Tabs'),
             links: this.querySelector('.ms-Tabs-links'),
             ellipsis: this.querySelector('.ms-Tabs-link.ms-Tabs-ellipsis')
         };
-    }
-    __setProperties(property) {
+    };
+    FabricTabs.prototype.__setProperties = function (property) {
+        var _this = this;
         if (!this._refs || !this._refs.container)
             return;
         if (property == null || property === 'tabs') {
@@ -75,24 +109,24 @@ class FabricTabs extends HTMLElement {
             this._refs.ellipsis.classList[(this._ellipsis) ? 'remove' : 'add']('hidden');
         }
         if (property == null || property === 'selected') {
-            let previous = (this._refs.links) ? this._refs.links.querySelector('.is-selected') : null;
+            var previous = (this._refs.links) ? this._refs.links.querySelector('.is-selected') : null;
             if (previous)
                 previous.classList.remove('is-selected');
-            let selection = (this._refs.links) ? this._refs.links.querySelector('[data-content="' + this._selected + '"]') : null;
+            var selection = (this._refs.links) ? this._refs.links.querySelector('[data-content="' + this._selected + '"]') : null;
             if (selection)
                 selection.classList.add('is-selected');
         }
         if (property == null || property === 'links') {
             if (!Array.isArray(this._links) || this._links.length == 0)
                 return;
-            let previousLinks = (this._refs.links) ? this._refs.links.querySelectorAll('.ms-Tabs-link:not(.ms-Tabs-ellipsis)') : [];
+            var previousLinks = (this._refs.links) ? this._refs.links.querySelectorAll('.ms-Tabs-link:not(.ms-Tabs-ellipsis)') : [];
             if (this._refs.links && previousLinks && previousLinks.length > 0) {
-                [].forEach.call(previousLinks, (entry) => {
-                    this._refs.links.removeChild(entry);
+                [].forEach.call(previousLinks, function (entry) {
+                    _this._refs.links.removeChild(entry);
                 });
             }
             var li = null;
-            [].concat(this.links).forEach(entry => {
+            [].concat(this.links).forEach(function (entry) {
                 li = document.createElement('LI');
                 li.tabIndex = 1;
                 li.classList.add('ms-Tabs-link');
@@ -100,40 +134,45 @@ class FabricTabs extends HTMLElement {
                 li.dataset.content = entry.name || '';
                 if (entry.disabled === true)
                     li.classList.add('is-disabled');
-                if (entry.name === this.selected)
+                if (entry.name === _this.selected)
                     li.classList.add('is-selected');
-                if (this._refs.links)
-                    this._refs.links.insertBefore(li, this._refs.ellipsis);
+                if (_this._refs.links)
+                    _this._refs.links.insertBefore(li, _this._refs.ellipsis);
             });
         }
-    }
-    __addListeners() {
+    };
+    FabricTabs.prototype.__addListeners = function () {
+        var _this = this;
         if (this._refs.links)
-            this._refs.links.addEventListener('click', (event) => {
+            this._refs.links.addEventListener('click', function (event) {
                 console.log('clicked');
                 if (!event.target || !event.target.tagName.toLowerCase() === 'li')
                     return;
                 if (event.target.classList.contains('is-disabled'))
                     return;
-                const selected = event.target.dataset.content;
+                var selected = event.target.dataset.content;
                 if (!selected)
                     return;
-                this.selected = selected;
+                _this.selected = selected;
             });
-    }
-    static get observedAttributes() {
-        return [
-            'selected',
-            'links',
-            'tabs',
-            'large',
-            'ellipsis'
-        ];
-    }
-    attributeChangedCallback(attr, oldValue, newValue) {
+    };
+    Object.defineProperty(FabricTabs, "observedAttributes", {
+        get: function () {
+            return [
+                'selected',
+                'links',
+                'tabs',
+                'large',
+                'ellipsis'
+            ];
+        },
+        enumerable: false,
+        configurable: true
+    });
+    FabricTabs.prototype.attributeChangedCallback = function (attr, oldValue, newValue) {
         if (oldValue === newValue || newValue === this[attr])
             return;
-        let n = newValue;
+        var n = newValue;
         if (attr === 'links') {
             try {
                 n = JSON.parse(newValue);
@@ -147,37 +186,12 @@ class FabricTabs extends HTMLElement {
             n = this.hasAttribute(attr);
         }
         this[attr] = n;
-    }
-}
+    };
+    return FabricTabs;
+}(HTMLElement));
 window.customElements.define('fabric-tabs', FabricTabs);
 (function (w, d) {
-    let style = d.createElement('STYLE');
-    style.textContent = `fabric-tabs{display:block}
-.ms-Tabs{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;box-sizing:border-box;margin:0;padding:0;box-shadow:none;font-size:14px;font-weight:400}
-.ms-Tabs-links{font-size:0;height:40px;list-style-type:none;padding:0;white-space:nowrap}
-.ms-Tabs-link{color:#333;display:inline-block;font-size:14px;font-weight:400;line-height:40px;margin-right:8px;padding:0 8px;text-align:center;vertical-align:top}
-.ms-Tabs-link:hover{cursor:pointer}
-.ms-Tabs-link:before{background-color:transparent;bottom:0;content:"";height:2px;left:8px;position:absolute;right:8px;/*transition:background-color .267s cubic-bezier(.1,.25,.75,.9)*/}
-.ms-Tabs-link:after{color:transparent;content:attr(title);display:block;font-weight:700;height:1px;overflow:hidden;visibility:hidden}
-.ms-Tabs-link.is-selected{font-weight:600;position:relative}
-.ms-Tabs-link.is-selected:before{background-color:#0078d7}
-.ms-Tabs-link.is-disabled{color:#a6a6a6}
-.ms-Tabs-link.ms-Tabs-link--overflow{color:#666}
-.ms-Tabs-link.ms-Tabs-link--overflow.is-selected{color:#0078d7}
-.ms-Tabs-link.ms-Tabs-link--overflow:focus:not(.is-selected),.ms-Tabs-link.ms-Tabs-link--overflow:hover:not(.is-selected){color:#212121}
-.ms-Tabs-link.ms-Tabs-link--overflow:active{color:#0078d7}
-.ms-Tabs-ellipsis > i{font-size:15px;position:relative;top:0} 
-.ms-Tabs-link.ms-Tabs-ellipsis.hidden {display:none}
-.ms-Tabs.ms-Tabs--large .ms-Tabs-link{font-size:17px}
-.ms-Tabs.ms-Tabs--large .ms-Tabs-link.is-selected{font-weight:300}
-.ms-Tabs.ms-Tabs--large .ms-Tabs-link.ms-Tabs-link--overflow:after{font-size:17px}
-.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link{height:40px;background-color:#f4f4f4;line-height:40px;margin-right:-2px;padding:0 10px}
-.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link:focus:not(.is-selected):not(.ms-Tabs-link--overflow),.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link:hover:not(.is-selected):not(.ms-Tabs-link--overflow){color:#000}
-.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link:active{color:#fff;background-color:#0078d7}
-.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link.is-selected{background-color:#0078d7;color:#fff;font-weight:300}
-.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link.ms-Tabs-link--overflow:focus:not(.is-selected),.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link.ms-Tabs-link--overflow:hover:not(.is-selected){background-color:#fff}
-.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link.ms-Tabs-link--overflow:active{background-color:#0078d7}
-@media screen and (-ms-high-contrast:active){.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link.is-selected{font-weight:600}
-}`;
+    var style = d.createElement('STYLE');
+    style.textContent = "fabric-tabs{display:block}\n.ms-Tabs{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;box-sizing:border-box;margin:0;padding:0;box-shadow:none;font-size:14px;font-weight:400}\n.ms-Tabs-links{font-size:0;height:40px;list-style-type:none;padding:0;white-space:nowrap}\n.ms-Tabs-link{color:#333;display:inline-block;font-size:14px;font-weight:400;line-height:40px;margin-right:8px;padding:0 8px;text-align:center;vertical-align:top}\n.ms-Tabs-link:hover{cursor:pointer}\n.ms-Tabs-link:before{background-color:transparent;bottom:0;content:\"\";height:2px;left:8px;position:absolute;right:8px;/*transition:background-color .267s cubic-bezier(.1,.25,.75,.9)*/}\n.ms-Tabs-link:after{color:transparent;content:attr(title);display:block;font-weight:700;height:1px;overflow:hidden;visibility:hidden}\n.ms-Tabs-link.is-selected{font-weight:600;position:relative}\n.ms-Tabs-link.is-selected:before{background-color:#0078d7}\n.ms-Tabs-link.is-disabled{color:#a6a6a6}\n.ms-Tabs-link.ms-Tabs-link--overflow{color:#666}\n.ms-Tabs-link.ms-Tabs-link--overflow.is-selected{color:#0078d7}\n.ms-Tabs-link.ms-Tabs-link--overflow:focus:not(.is-selected),.ms-Tabs-link.ms-Tabs-link--overflow:hover:not(.is-selected){color:#212121}\n.ms-Tabs-link.ms-Tabs-link--overflow:active{color:#0078d7}\n.ms-Tabs-ellipsis > i{font-size:15px;position:relative;top:0} \n.ms-Tabs-link.ms-Tabs-ellipsis.hidden {display:none}\n.ms-Tabs.ms-Tabs--large .ms-Tabs-link{font-size:17px}\n.ms-Tabs.ms-Tabs--large .ms-Tabs-link.is-selected{font-weight:300}\n.ms-Tabs.ms-Tabs--large .ms-Tabs-link.ms-Tabs-link--overflow:after{font-size:17px}\n.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link{height:40px;background-color:#f4f4f4;line-height:40px;margin-right:-2px;padding:0 10px}\n.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link:focus:not(.is-selected):not(.ms-Tabs-link--overflow),.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link:hover:not(.is-selected):not(.ms-Tabs-link--overflow){color:#000}\n.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link:active{color:#fff;background-color:#0078d7}\n.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link.is-selected{background-color:#0078d7;color:#fff;font-weight:300}\n.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link.ms-Tabs-link--overflow:focus:not(.is-selected),.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link.ms-Tabs-link--overflow:hover:not(.is-selected){background-color:#fff}\n.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link.ms-Tabs-link--overflow:active{background-color:#0078d7}\n@media screen and (-ms-high-contrast:active){.ms-Tabs.ms-Tabs--tabs .ms-Tabs-link.is-selected{font-weight:600}\n}";
     d.head.appendChild(style);
 })(window, document);
