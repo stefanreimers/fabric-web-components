@@ -1,7 +1,18 @@
 # Fabric Web Components
-Custom Elements v1 wrapper for the Office UI Fabric JS components (retired by MS)
+Custom Elements wrapper for the Office UI Fabric JS components (the vanilla JavaScript version has been retired by MSFT in favor of the React version)
 
 # Get started
+The components are self-contained and work out of the box. There are no additional JavaScript or style files to include apart from the components themselves, e.g.
+
+```html
+<script type="text/javascript" src="dist/fabric-textfield.js"></script>
+```
+
+
+
+
+# Legacy versions
+Legacy / ES5 versions of the components are available in the **es5 branch**.
 Your browser must be capable of handling custom elements **v1**. If that's not the case there is a polyfill at the [Web Components repo](https://github.com/webcomponents/webcomponentsjs) which you can install by 
 
 ```
