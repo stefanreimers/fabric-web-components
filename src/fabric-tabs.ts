@@ -1,6 +1,12 @@
+interface IFabricTabLink {
+  text: string;
+  name: string;
+  disabled: boolean
+}
+
 class FabricTabs extends HTMLElement {
 
-  private _links: any[];
+  private _links: IFabricTabLink[];
   private _tabs: boolean;
   private _large: boolean;
   private _ellipsis: boolean;
@@ -119,10 +125,10 @@ class FabricTabs extends HTMLElement {
         li = document.createElement('LI');
         li.tabIndex = 1;
         li.classList.add('ms-Tabs-link');
-        li.title = li.textContent = entry.text || '';
-        li.dataset.content = entry.name || '';
-        if (entry.disabled === true) li.classList.add('is-disabled');
-        if (entry.name === this.selected) li.classList.add('is-selected');
+        li.title = li.textContent = (<IFabricTabLink>entry).text || '';
+        li.dataset.content = (<IFabricTabLink>entry).name || '';
+        if ((<IFabricTabLink>entry).disabled === true) li.classList.add('is-disabled');
+        if ((<IFabricTabLink>entry).name === this.selected) li.classList.add('is-selected');
 
         if (this._refs.links) this._refs.links.insertBefore(li, this._refs.ellipsis);
       });

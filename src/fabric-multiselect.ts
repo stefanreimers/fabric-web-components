@@ -146,6 +146,7 @@ class FabricMultiSelect extends HTMLElement {
                 let value = [].concat(this.value);
                 //@ts-ignore
                 toDeselect.forEach(element => {
+                  //@ts-ignore
                   let position = value.indexOf(element);
                   if (position !== -1) value.splice(position, 1)
                 });

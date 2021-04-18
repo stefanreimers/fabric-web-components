@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fabric Tables</title>
+</head>
+<body>
+  
+  <details>
+    <summary>Table with default template</summary>
+    <section class="table" >
+    <button style="display: block;" onclick="into('#default')">Fill with data</button>
+    <fabric-table id="default" rowid="c" selected="6,8" modifier="selectable" itemheight="30" style="display:block;width: 80vw; height: 300px;"></fabric-table>
+    </section>
+  </details>
+  
+  <details open>
+    <summary>Table with custom styling</summary>
+    <section class="table" >
+	<style>
+	#customStyles tr {
+		font-size: 1rem;
+	}
+	</style>
+    <button style="display: block;" onclick="into('#customStyles')">Fill with data</button>
+    <fabric-table id="customStyles" rowid="c" selected="6,8" modifier="selectable" itemheight="40" style="display:block;width: 80vw; height: 300px;"></fabric-table>
+    </section>
+  </details>
+
+  <details>
+    <summary>Table with <code>template</code> tag</summary>
+    <section class="table" >
+    <button style="display:block" onclick="into('#template')">Fill with data</button>
+    <fabric-table id="template" rowid="c" selected="6,8" modifier="selectable" itemheight="30" style="display:block;width: 80vw; height: 300px;">
+      <template>
+        <tr>
+          <td class="ms-Table-rowCheck"></td>
+          <td><b data-template-content="c"></b></td>
+          <td data-template-class="b" data-template-content="b"></td>
+          <td><span data-template-attribute="src:a"></span></td>
+        </tr>
+      </template>
+    </fabric-table>
+    </section>
+  </details>
+
+  <details>
+    <summary>Table with <code>tagged template</code></summary>
+    <section class="table" >
+    <button style="display:block" onclick="into('#taggedtemplate')">Fill with data</button>
+    <fabric-table id="taggedtemplate" rowid="c" selected="6,8" modifier="selectable" itemheight="30" style="display:block;width: 80vw; height: 300px;">
+    </fabric-table>
+    </section>
+  </details>
+
+	<script>
+		(window.customElements) || document.write('<script src="polyfills/custom-elements.min.js"><\/script>')
+	</script>
+	
+  <script src="../dist/fabric-table.js" type="text/javascript"></script>
+
+  <script>
+
+	const taggedTemplateFabricTable = document.getElementById('taggedtemplate');
+	taggedTemplateFabricTable.setTemplateHandler( (item) => String.raw`<tr>
+      <td class="ms-Table-rowCheck"></td>
+      <td style="font-weight:bold; color:red">${item.c}</td>
+      <td class="${item.b}">${item.b}</td>
+      <td><span src="${item.a}"></span></td>
+    </tr>` );
+
+var into = function( selector){
+      
+      const l = document.querySelector(selector);
+
+			console.log('into', l);
+			
+			l.columns = [{id:'a', label:'First', width: '10%'}, {id:'b', label:'Second', width: '30%'}, {id:'c', label: 'Third', width: '60%'}];
+			
+			l.items = [ { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 4},
+{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 5}	,
+{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 6}	,
+{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 7}	,
+{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 8}	,
+{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 9}	,
+{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 10}	,
+{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 11}	,
+{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+				{ a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3},
+        { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 3}, { a: 1, b: 2, c: 12}					]
+        .map( (item, index) => {item.c=index.toString(); return item;});
+	}
+
+  </script>
+
+</body>
+</html>
