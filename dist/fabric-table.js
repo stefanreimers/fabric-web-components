@@ -74,7 +74,7 @@ class FabricTable extends HTMLElement {
         let container = document.createElement('div');
         container.className = 'container';
         container.style.setProperty('--item-height', this._itemheight + 'px');
-        container.innerHTML = `<div class="displayHeader"></div><div class="scroller" data-id="scroller">
+        container.innerHTML = `<div class="displayHeader" style="display:block"></div><div class="scroller" data-id="scroller">
 			<table class="ms-Table ${modifier}"><thead><tr></tr></thead><tbody></tbody></table>
     </div>`;
         this.appendChild(container);
@@ -111,11 +111,12 @@ class FabricTable extends HTMLElement {
                     let col = document.createElement('col');
                     col.width = column.width || '';
                     this._refs.table.appendChild(col);
-                    columnDimensions.push((this._modifier === 'selectable') ? 'calc(' + (column.width || '1fr') + ' - ' + Math.ceil(20 / this._columns.length) + 'px)' : (column.width || '1fr'));
                 });
-                this._refs.displayHeader.style.gridTemplateColumns = columnDimensions.join(" ");
                 let a = headContent.concat(this._columns.map(col => { return '<th data-id="' + (col.id || '') + '">&nbsp;</th>'; })).join('') + '</tr>';
-                let b = displayHeaderContent.concat(this._columns.map(col => { return '<span class="text">' + (col.label || '') + '</span>'; })).join('');
+                let b = displayHeaderContent.concat(this._columns.map(col => {
+                    let width = (col.width.indexOf('%')) ? (1 / 100 * parseFloat(col.width)) : col.width;
+                    return '<span data-width="' + col.width + '" style="width:calc((100% - 20px) * ' + width + ' )" class="text">' + (col.label || '') + '</span>';
+                })).join('');
                 this._refs.head.innerHTML = a;
                 this._refs.displayHeader.innerHTML = b;
             }
@@ -285,7 +286,7 @@ window.customElements.define('fabric-table', FabricTable);
     display: grid;grid-template-rows: 1fr;grid-column-gap: 0px;grid-row-gap: 0px;
     font-size: 11px;color: #666;background: white;z-index: 10;border-bottom: 1px solid #eaeaea;font-weight: 400;}
   .ms-Table, fabric-table .displayHeader {font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased}
-  fabric-table .displayHeader span { padding: 0 10px;box-sizing:border-box; display: block;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  fabric-table .displayHeader span { float:left; padding: 0 10px;box-sizing:border-box; display: block;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 100% }
   .ms-Table{display:table;width:100%;border-collapse:collapse}
   .ms-Table--fixed{table-layout:fixed}
   .ms-Table-row,.ms-Table tr{display:table-row;line-height:var(--item-height,30px);font-weight:300;font-size:12px;color:#333}
