@@ -115,7 +115,8 @@ class FabricTable extends HTMLElement {
                 let a = headContent.concat(this._columns.map(col => { return '<th data-id="' + (col.id || '') + '">&nbsp;</th>'; })).join('') + '</tr>';
                 let b = displayHeaderContent.concat(this._columns.map(col => {
                     let width = (col.width.indexOf('%')) ? (1 / 100 * parseFloat(col.width)) : col.width;
-                    return '<span data-width="' + col.width + '" style="width:calc((100% - 20px) * ' + width + ' )" class="text">' + (col.label || '') + '</span>';
+                    let base = (this._modifier === 'selectable') ? '(100% - 20px)' : '100%';
+                    return '<span data-width="' + col.width + '" style="width:calc(' + base + ' * ' + width + ' )" class="text">' + (col.label || '') + '</span>';
                 })).join('');
                 this._refs.head.innerHTML = a;
                 this._refs.displayHeader.innerHTML = b;
