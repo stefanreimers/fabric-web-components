@@ -276,7 +276,7 @@ class FabricTable extends HTMLElement {
 window.customElements.define('fabric-table', FabricTable);
 (function (w, d) {
     let style = d.createElement('STYLE');
-    style.textContent = `
+    style.textContent = `fabric-table {font-size: var(--fabric-table-font-size, 11px)}
   fabric-table .container {position:relative; overflow: auto; transform:scale(1);height:100%; --item-height: 30px;
     scrollbar-width: thin;-webkit-scrollbar-width: thin;-ms-overflow-style: -ms-autohiding-scrollbar;}
   fabric-table .container::-webkit-scrollbar{width: 5px;height: 8px;background-color: #f0f0f0;}
@@ -285,18 +285,19 @@ window.customElements.define('fabric-table', FabricTable);
   fabric-table .ms-Table thead{ visibility: hidden}
   fabric-table .displayHeader {position:sticky;left:0;right:0;top: 0;height: var(--item-height,30px);line-height: var(--item-height,30px);
     display: grid;grid-template-rows: 1fr;grid-column-gap: 0px;grid-row-gap: 0px;
-    font-size: 11px;color: #666;background: white;z-index: 10;border-bottom: 1px solid #eaeaea;font-weight: 400;}
+    font-size: 1em;color: #666;background: white;z-index: 10;border-bottom: 1px solid #eaeaea;font-weight: 400;}
   .ms-Table, fabric-table .displayHeader {font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased}
   fabric-table .displayHeader span { float:left; padding: 0 10px;box-sizing:border-box; display: block;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 100% }
   .ms-Table{display:table;width:100%;border-collapse:collapse}
   .ms-Table--fixed{table-layout:fixed}
-  .ms-Table-row,.ms-Table tr{display:table-row;line-height:var(--item-height,30px);font-weight:300;font-size:12px;color:#333}
+  .ms-Table-row,.ms-Table tr{display:table-row;line-height:var(--item-height,30px);font-weight:300;font-size:1.1em;color:#333}
+  fabric-table.equal-size .ms-Table-row, fabric-table.equal-size .ms-Table tr {font-size: 1em}
   .ms-Table-row.is-selected,.ms-Table tr.is-selected{background-color:#b3d6f2}
   .ms-Table-row.is-selected .ms-Table-rowCheck,.ms-Table tr.is-selected .ms-Table-rowCheck{background-color:#0078d7}
   .ms-Table-row.is-selected .ms-Table-rowCheck:before,.ms-Table tr.is-selected .ms-Table-rowCheck:before{display:none}
   .ms-Table-row.is-selected .ms-Table-rowCheck:after,.ms-Table tr.is-selected .ms-Table-rowCheck:after{content:"☑";color:#fff; font-size:14px}
   .ms-Table-cell,.ms-Table td,.ms-Table th{display:table-cell;padding:0 10px;box-sizing:border-box}
-  .ms-Table-head,.ms-Table thead th{font-weight:300;font-size:11px;color:#666}
+  .ms-Table-head,.ms-Table thead th{font-weight:300;font-size:1em;color:#666}
   .ms-Table-head .ms-Table-cell,.ms-Table-head .ms-Table-rowCheck,.ms-Table-head td,.ms-Table-head th,.ms-Table thead .ms-Table-cell,.ms-Table thead .ms-Table-rowCheck,.ms-Table thead td,.ms-Table thead th{font-weight:400;text-align:left;border-bottom:1px solid #eaeaea}
   .ms-Table-rowCheck{display:table-cell;width:20px;position:relative;padding:0}
   .ms-Table-rowCheck:after{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-weight:400;speak:none;content:"☐";color:#a6a6a6;font-size:14px;position:absolute;left:4px;top:1px}
