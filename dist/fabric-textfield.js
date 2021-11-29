@@ -284,7 +284,7 @@ fabric-textfield .ms-TextField.is-required .ms-Label::after {
 }
 
 .ms-TextField.is-active {
-  border-color: #0078d7;
+  border-color: var(--fabric-textfield-border-active, #0078d7);
 }
 
 .ms-TextField-field {
@@ -292,7 +292,9 @@ fabric-textfield .ms-TextField.is-required .ms-Label::after {
   margin: 0;
   padding: 0;
   box-shadow: none;
-  border: 1px solid #c8c8c8;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--fabric-textfield-border, #c8c8c8);
   border-radius: 0;
   font-weight: 300;
   font-size: 14px;
@@ -303,14 +305,16 @@ fabric-textfield .ms-TextField.is-required .ms-Label::after {
   min-width: 180px;
   outline: 0;
   text-overflow: ellipsis;
+  background-color: white;
 }
 
 .ms-TextField-field:hover {
-  border-color: #767676;
+  border-color: var(--fabric-textfield-border-hover, #767676);
 }
 
-.ms-TextField-field:focus {
-  border-color: #0078d7;
+.ms-TextField-field:focus,
+.ms-TextField-field:focus-within {
+  border-color: var(--fabric-textfield-border-focus, #0078d7);
 }
 
 @media screen and (-ms-high-contrast: active) {
@@ -329,7 +333,7 @@ fabric-textfield .ms-TextField.is-required .ms-Label::after {
 
 .ms-TextField-field[disabled] {
   background-color: #f4f4f4;
-  border-color: #f4f4f4;
+  border-color: var(--fabric-textfield-border-disabled, #f4f4f4);
   pointer-events: none;
   cursor: default;
 }
