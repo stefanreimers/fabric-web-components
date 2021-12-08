@@ -38,10 +38,14 @@ class FabricCommandButton extends HTMLElement {
             <button class="ms-CommandButton-button">
                 <span class="ms-CommandButton-icon ms-fontColor-themePrimary"><i class="ms-Icon"></i></span> 
                 <span class="ms-CommandButton-label"></span> 
-				<span class="ms-CommandButton-dropdownIcon"><i class="ms-Icon ms-Icon--ChevronDown"></i></span> 
+				<span class="ms-CommandButton-dropdownIcon"><svg class="ms-Icon" style="width:18px;height:18px;padding: 0px" width="18px" height="18px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.36612 16.1161C7.87796 16.6043 7.87796 17.3957 8.36612 17.8839L23.1161 32.6339C23.6043 33.122 24.3957 33.122 24.8839 32.6339L39.6339 17.8839C40.122 17.3957 40.122 16.6043 39.6339 16.1161C39.1457 15.628 38.3543 15.628 37.8661 16.1161L24 29.9822L10.1339 16.1161C9.64573 15.628 8.85427 15.628 8.36612 16.1161Z" fill="#212121"/>
+</svg></span>
             </button>
 			<button class="ms-CommandButton-splitIcon">
-				<i class="ms-Icon ms-Icon--ChevronDown"></i>
+				<svg class="ms-Icon" width="16px" height="16px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.36612 16.1161C7.87796 16.6043 7.87796 17.3957 8.36612 17.8839L23.1161 32.6339C23.6043 33.122 24.3957 33.122 24.8839 32.6339L39.6339 17.8839C40.122 17.3957 40.122 16.6043 39.6339 16.1161C39.1457 15.628 38.3543 15.628 37.8661 16.1161L24 29.9822L10.1339 16.1161C9.64573 15.628 8.85427 15.628 8.36612 16.1161Z" fill="#212121"/>
+</svg>
 			</button>
             </div>`;
         this.innerHTML = markup;
@@ -78,15 +82,21 @@ class FabricCommandButton extends HTMLElement {
         if (property == null || property === 'items') {
             let action = (this.items.length === 0) ? 'add' : 'remove';
             ['splitIcon', 'dropdown', 'contextualMenu'].forEach(element => {
-                if (this._refs[element])
-                    this._refs[element].classList[action]('is-hidden');
+                if (element === 'splitIcon' && this._refs[element]) {
+                    this._refs.splitIcon.classList[this.split ? 'remove' : 'add']('is-hidden');
+                }
+                else {
+                    if (this._refs[element])
+                        this._refs[element].classList[action]('is-hidden');
+                }
             });
             if (this.items.length > 0 && !this.querySelector('fabric-contextual-menu')) {
-                console.log('Add menu');
                 let menu = document.createElement('fabric-contextual-menu');
-                menu._host = this._refs.button;
+                menu._host = (this._split === true && this._refs.splitIcon) ? this._refs.splitIcon : this._refs.button;
+                let hasIcons = false;
                 this.items.forEach(item => {
                     let li = document.createElement('LI');
+                    li.dataset.source = window.btoa(JSON.stringify(item));
                     if (typeof item === 'string') {
                         li.textContent = item;
                     }
@@ -94,6 +104,12 @@ class FabricCommandButton extends HTMLElement {
                         li.textContent = item.text;
                         if (item.class)
                             li.className = item.class;
+                        if (item.icon) {
+                            let i = document.createElement('i');
+                            i.className = 'ms-Icon ms-Icon--' + item.icon.toString();
+                            li.appendChild(i);
+                            hasIcons = true;
+                        }
                     }
                     menu.appendChild(li);
                 });
@@ -115,7 +131,7 @@ class FabricCommandButton extends HTMLElement {
     static get observedAttributes() {
         return ['disabled', 'label', 'icon', 'split'];
     }
-    attributeChangedCallback(attrName, oldValue, newValue) {
+    attributeChangedCallback(attr, oldValue, newValue) {
         let n = newValue;
         if (typeof this[attr] === 'boolean') {
             n = this.hasAttribute(attr);
@@ -129,7 +145,7 @@ window.customElements.define('fabric-command-button', FabricCommandButton);
 (function (w, d) {
     let style = d.createElement('STYLE');
     style.textContent = `
-fabric-command-button{display:inline-block}
+fabric-command-button{display:inline-block, --size: var(--fabric-command-button-height, 40px)}
 .ms-CommandButton{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
 -webkit-font-smoothing:antialiased;display:inline-block;vertical-align:top}
 .ms-CommandButton.is-hidden{display:none}
@@ -144,7 +160,7 @@ fabric-command-button{display:inline-block}
 .ms-CommandButton2 .ms-ContextualMenu{display:none}
 .ms-CommandButton-button,
 .ms-CommandButton-splitIcon{box-sizing:border-box;margin:0;padding:0;box-shadow:none;color:#333;font-size:14px;font-weight:400;
-cursor:pointer;display:inline-block;height:40px;line-height:40px;outline:1px solid transparent;padding:0 8px;position:relative;
+cursor:pointer;display:inline-block;height:var(--size, 40px);line-height:var(--size, 40px);outline:1px solid transparent;padding:0 8px;position:relative;
 vertical-align:top;background:transparent}
 .ms-CommandButton-button:hover,
 .ms-CommandButton-splitIcon:hover{background-color:#eaeaea}
@@ -171,12 +187,16 @@ vertical-align:top;background:transparent}
 }
 .ms-CommandButton-icon{display:inline-block;margin-right:8px;position:relative;font-size:16px;min-width:16px;height:100%}.
 ms-CommandButton-icon .ms-Icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
-.ms-CommandButton-label{font-size:14px;font-weight:400;color:#333;line-height:40px;height:100%;display:inline-block;vertical-align:top}
+.ms-CommandButton-label{font-size:14px;font-weight:400;color:#333;line-height:var(--size, 40px);height:100%;display:inline-block;vertical-align:top}
 .ms-CommandButton-label:hover{color:#212121}
 fabric-command-button[split] .ms-CommandButton-dropdownIcon {display: none}
 .ms-CommandButton-dropdownIcon,
-.ms-CommandButton-splitIcon{display:inline-block;position:relative;color:#333;font-size:12px;font-weight:300;min-width:12px;height:40px;
+.ms-CommandButton-splitIcon{display:inline-block;position:relative;color:#333;font-size:12px;font-weight:300;min-width:12px;height:var(--size, 40px);
 vertical-align:top;margin-left:8px}
+.ms-CommandButton-dropdownIcon {
+  display: inline-grid;
+  align-items: center;
+}
 .ms-CommandButton-dropdownIcon .ms-Icon,
 .ms-CommandButton-splitIcon .ms-Icon{line-height:normal;padding-top:16px}
 .ms-CommandButton-dropdownIcon:focus:before,
@@ -192,7 +212,7 @@ vertical-align:top;margin-left:8px}
 .ms-CommandButton.ms-CommandButton--noLabel .ms-CommandButton-label{display:none}
 .ms-CommandButton.ms-CommandButton--noLabel .ms-CommandButton-button{padding:0 12px}
 .ms-CommandButton.ms-CommandButton--inline .ms-CommandButton-button{background:none}
-.ms-CommandButton.ms-CommandButton--actionButton .ms-CommandButton-button{width:50px;height:40px}
+.ms-CommandButton.ms-CommandButton--actionButton .ms-CommandButton-button{width:50px;height:var(--size, 40px)}
 .ms-CommandButton.ms-CommandButton--actionButton .ms-CommandButton-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
 width:16px;height:16px;padding-right:0}
 .ms-CommandButton.ms-CommandButton--actionButton .ms-CommandButton-icon > i {display:block}
@@ -208,6 +228,18 @@ width:16px;height:16px;padding-right:0}
 }
 .ms-fontColor-themePrimary { color: #0078d7 }
 .is-hidden{display: none !important}
+
+.ms-CommandButton-splitIcon {
+display: inline-grid;
+align-items: center;
+padding: 0;
+}
+
+.ms-CommandButton .ms-CommandButton-splitIcon svg.ms-Icon {
+  padding: 0 0 0 .3rem !important;
+border-left: 1px solid #c8c8c8;
+}
+
 `;
     d.head.appendChild(style);
 })(window, document);

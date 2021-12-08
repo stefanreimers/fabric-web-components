@@ -288,6 +288,7 @@ window.customElements.define('fabric-table', FabricTable);
     font-size: 1em;color: #666;background: white;z-index: 10;border-bottom: 1px solid #eaeaea;font-weight: 400;}
   .ms-Table, fabric-table .displayHeader {font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased}
   fabric-table .displayHeader span { float:left; padding: 0 10px;box-sizing:border-box; display: block;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 100% }
+  fabric-table .displayHeader span { font-size: 13px;text-align:left; font-weight:600; color: #223333 }
   .ms-Table{display:table;width:100%;border-collapse:collapse}
   .ms-Table--fixed{table-layout:fixed}
   .ms-Table-row,.ms-Table tr{display:table-row;line-height:var(--item-height,30px);font-weight:300;font-size:1.1em;color:#333}

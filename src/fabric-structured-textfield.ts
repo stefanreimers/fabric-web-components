@@ -38,7 +38,7 @@ class FabricStructuredTextfield extends HTMLElement {
   get description() { return this._description; }
   get type() { return this._type; }
   get name() { return this._name; }
-  get value() { return this._value; }
+  get value() { return (this._refs.input) ? this._refs.input.innerHTML : null }
 
   set modifier(value) { throw new RangeError('Modifier is a static property'); }
   set type(value) { throw new RangeError('Input type is a static property'); }
@@ -148,8 +148,11 @@ class FabricStructuredTextfield extends HTMLElement {
       });
       this._refs.input.addEventListener('keyup', e => {
 
-        //@ts-ignore
-        if (e.target && e.target.innerHTML === '') e.target.innerHTML = '<div></div>';
+        // Let Ctrl+A do its thing
+        //@ts-expect-error
+        if (e.ctrlKey && e.keyCode == 65) {
+          return;
+        }
 
         //@ts-ignore
         if ((e.keyCode >= 0x30 || e.keyCode == 0x20) && this._refs.input) {
@@ -157,9 +160,20 @@ class FabricStructuredTextfield extends HTMLElement {
           this.highlight(this._refs.input);
           this.setCaret(pos, this._refs.input);
         }
+
+
       });
       this._refs.input.addEventListener('keydown', (e) => {
-        const tab = '    ';
+        const tab = '  ';
+
+        // Stop editor from removing its last child
+        //@ts-expect-error
+        if (e.target.textContent === '' && [8].indexOf(e.keyCode) !== -1) {
+          e.preventDefault();
+          return;
+        }
+
+        // Handle Tab
         if ((<KeyboardEvent>e).which === 9 && this._refs.input) {
           const pos = this.caret(this._refs.input) + tab.length;
 
@@ -195,13 +209,13 @@ class FabricStructuredTextfield extends HTMLElement {
 
       console.log(node);
       const s = node.innerText
-        .replace(/(\/\/.*)/g, '<em>$1</em>')
+        .replace(/(\/\/.*)/g, '<tt data-type-comment>$1</tt>')
         .replace(
           /\b(new|if|else|do|while|switch|for|in|of|continue|break|return|typeof|function|var|const|let|\.length|\.\w+)(?=[^\w])/g,
-          '<tt data-reserved>$1</tt>',
+          '<tt data-type-reserved>$1</tt>',
         )
-        .replace(/(".*?"|'.*?'|`.*?`)/g, '<strong><em>$1</em></strong>')
-        .replace(/\b(\d+)/g, '<em><strong>$1</strong></em>');
+        .replace(/(".*?"|'.*?'|`.*?`)/g, '<tt data-type-string>$1</tt>')
+        .replace(/\b(\d+)/g, '<tt data-type-number>$1</tt>');
       node.innerHTML = s.split('\n').join('<br/>');
     }
   };

@@ -166,11 +166,14 @@ class FabricListItem extends HTMLElement {
 
   private _actionClickHandler(e: MouseEvent) {
 
+    if (!e.target) return;
+    const target = (<HTMLElement>e.target).closest('.ms-ListItem-action');
 
-    if (e.target && (<HTMLElement>e.target).classList.contains('ms-ListItem-action')) {
+
+    if (target && (<HTMLElement>target).classList.contains('ms-ListItem-action')) {
 
       //@ts-ignore
-      let action = (e.target && e.target.dataset) ? e.target.dataset.action : null;
+      let action = (target && target.dataset) ? target.dataset.action : null;
       if (action == null) return;
 
       this.dispatchEvent(new CustomEvent('listitemActionClick', {
@@ -202,8 +205,9 @@ class FabricListItem extends HTMLElement {
     // console.log('attributeChangedCallback', attr, oldValue, newValue);
     //@ts-ignore
     if (oldValue === newValue || newValue === this[attr]) return;
-    //@ts-ignore
-    this[attr] = newValue;
+
+    //@ts-expect-error
+    if (Array.isArray(this[attr])) { this[attr] = newValue.split(','); } else this[attr] = newValue;
   }
 
 }
@@ -211,42 +215,52 @@ window.customElements.define('fabric-list-item', FabricListItem);
 
 // Set styles
 (function (w, d) {
-
+  const id = 'list-item';
+  const node = document.querySelector('style[data-fabric="' + id + '"]');
+  if (node) {
+    return;
+  }
+  const tag = 'fabric-list-item';
   let style = d.createElement('STYLE');
-  style.textContent = `fabric-list-item .ms-ListItem > span:empty,
-fabric-list-item .ms-ListItem > .ms-ListItem-image:empty,
-fabric-list-item .display-none {display:none}
-.ms-ListItem{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;box-sizing:border-box;margin:0;box-shadow:none;color:#333;font-size:14px;font-weight:400}
-.ms-ListItem{padding:0;*zoom:1;padding:9px 28px 3px;position:relative;display:block}
-.ms-ListItem:after{clear:both}
-.ms-ListItem-primaryText,.ms-ListItem-secondaryText,.ms-ListItem-tertiaryText{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
-.ms-ListItem-primaryText{color:#212121;font-weight:300;font-size:21px;padding-right:80px;position:relative;top:-4px}
-.ms-ListItem-secondaryText{color:#333;font-weight:400;font-size:14px;line-height:25px;position:relative;top:-7px;padding-right:30px}
-.ms-ListItem-tertiaryText{color:#767676;font-weight:300;font-size:14px;position:relative;top:-9px;margin-bottom:-4px;padding-right:30px}
-.ms-ListItem-metaText{color:#333;font-weight:300;font-size:11px;position:absolute;right:30px;top:39px}
-.ms-ListItem-image{float:left;height:70px;margin-left:-8px;margin-right:10px;width:70px;background-color:#333}
-.ms-ListItem-selectionTarget{display:none; height:14px;left:6px;position:absolute;top:13px;width:14px;border:1px solid #333}
-.ms-ListItem-actions{max-width:80px;position:absolute;right:30px;text-align:right;top:10px}
-.ms-ListItem-action{color:#a6a6a6;display:inline-block;font-size:15px;position:relative;text-align:center;top:3px;cursor:pointer;height:16px;width:16px}
-.ms-ListItem-action .ms-Icon{vertical-align:top}
-.ms-ListItem-action:hover{color:#666;outline:1px solid transparent}
-.ms-ListItem.is-unread{border-left:3px solid #0078d7;padding-left:27px}
-.ms-ListItem.is-unread .ms-ListItem-metaText,.ms-ListItem.is-unread .ms-ListItem-secondaryText{color:#0078d7;font-weight:600}
-.ms-ListItem.is-unseen:after{border-right:10px solid transparent;border-top:10px solid #0078d7;left:0;position:absolute;top:0;display:table;content:"";line-height:0}
-.ms-ListItem.is-selectable .ms-ListItem-image{margin-left:0}
-.ms-ListItem.is-selectable:hover{background-color:#eaeaea;cursor:pointer;outline:1px solid transparent}
-.ms-ListItem.is-selectable:hover:before{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-weight:400;speak:none;position:absolute;top:14px;left:7px;height:15px;width:15px;border:1px solid #767676}
-.ms-ListItem.is-selectable:hover .ms-ListItem-selectionTarget, .ms-ListItem.is-selected .ms-ListItem-selectionTarget {display: initial}
-.ms-ListItem.is-selected:before{border:1px solid transparent}
-.ms-ListItem.is-selected:before,.ms-ListItem.is-selected:hover:before{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-weight:400;speak:none;font-size:17px;color:#767676;position:absolute;top:23px;left:7px;border:0}
-.ms-ListItem.is-selected:hover{background-color:#b3d6f2;outline:1px solid transparent}
-.ms-ListItem.ms-ListItem--document{padding:0}
-.ms-ListItem.ms-ListItem--document .ms-ListItem-itemIcon{width:70px;height:70px;float:left;text-align:center}
-.ms-ListItem.ms-ListItem--document .ms-ListItem-itemIcon .ms-Icon{font-size:38px;line-height:70px;color:#666}
-.ms-ListItem.ms-ListItem--document .ms-ListItem-primaryText{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;padding-top:15px;padding-right:0;position:static}
-.ms-ListItem.ms-ListItem--document .ms-ListItem-secondaryText{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#666;font-weight:400;font-size:11px;padding-top:6px}
-.ms-ListItem.is-selected .ms-ListItem-selectionTarget {transition-property:background,border,border-color;transition-duration:.2s;transition-timing-function:cubic-bezier(.4,0,.23,1);border-color: #0078d7;background-color:#0078d7}
-.ms-ListItem.is-selected .ms-ListItem-selectionTarget:after {content:"✓";position:absolute;left:3px;font-weight:900;font-size:10px;color:white}`
+  style.dataset.fabric = id;
+  style.textContent = `${tag} {font-size: var(--fabric-list-item-font-size, 14px )}
+  ${tag} .ms-ListItem > span:empty,
+${tag} .ms-ListItem > .ms-ListItem-image:empty,
+${tag} .display-none {display:none}
+${tag} .ms-ListItem{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  box-sizing:border-box;margin:0;box-shadow:none;
+  color:#333;font-size:1em;font-weight:400}
+${tag} .ms-ListItem{padding:0;*zoom:1;padding:9px 28px 3px;position:relative;display:block}
+${tag} .ms-ListItem:after{clear:both}
+${tag} .ms-ListItem-primaryText,${tag} .ms-ListItem-secondaryText,${tag} .ms-ListItem-tertiaryText{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+${tag} .ms-ListItem-primaryText{color:#212121;font-weight:300;font-size:1.5em;padding-right:80px;position:relative;top:-4px}
+${tag} .ms-ListItem-secondaryText{color:#333;font-weight:400;font-size:1em;line-height:25px;position:relative;top:-7px;padding-right:30px}
+${tag} .ms-ListItem-tertiaryText{color:#767676;font-weight:300;font-size:1em;position:relative;top:-9px;margin-bottom:-4px;padding-right:30px}
+${tag} .ms-ListItem-metaText{color:#333;font-weight:300;font-size:0.8em;position:absolute;right:30px;top:39px}
+${tag} .ms-ListItem-image{float:left;height:70px;margin-left:-8px;margin-right:10px;width:70px;background-color:#333}
+${tag} .ms-ListItem-selectionTarget{display:none; height:14px;left:6px;position:absolute;top:13px;width:14px;border:1px solid #333}
+${tag} .ms-ListItem-actions{max-width:80px;position:absolute;right:30px;text-align:right;top:10px}
+${tag} .ms-ListItem-action{color:#a6a6a6;display:inline-block;font-size:1.1em;position:relative;text-align:center;top:3px;cursor:pointer;height:1.1em;width:1.1em}
+${tag} .ms-ListItem-action .ms-Icon{vertical-align:top}
+${tag} .ms-ListItem-action:hover{color:#666;outline:1px solid transparent}
+${tag} .ms-ListItem.is-unread{border-left:3px solid #0078d7;padding-left:27px}
+${tag} .ms-ListItem.is-unread .ms-ListItem-metaText,.ms-ListItem.is-unread .ms-ListItem-secondaryText{color:#0078d7;font-weight:600}
+${tag} .ms-ListItem.is-unseen:after{border-right:10px solid transparent;border-top:10px solid #0078d7;left:0;position:absolute;top:0;display:table;content:"";line-height:0}
+${tag} .ms-ListItem.is-selectable .ms-ListItem-image{margin-left:0}
+${tag} .ms-ListItem.is-selectable:hover{background-color:#eaeaea;cursor:pointer;outline:1px solid transparent}
+${tag} .ms-ListItem.is-selectable:hover:before{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-weight:400;speak:none;position:absolute;top:14px;left:7px;height:15px;width:15px;border:1px solid #767676}
+${tag} .ms-ListItem.is-selectable:hover .ms-ListItem-selectionTarget,${tag} .ms-ListItem.is-selected .ms-ListItem-selectionTarget {display: initial}
+${tag} .ms-ListItem.is-selected:before{border:1px solid transparent}
+${tag} .ms-ListItem.is-selected:before,${tag} .ms-ListItem.is-selected:hover:before{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-weight:400;speak:none;font-size:17px;color:#767676;position:absolute;top:23px;left:7px;border:0}
+${tag} .ms-ListItem.is-selected:hover{background-color:#b3d6f2;outline:1px solid transparent}
+${tag} .ms-ListItem.ms-ListItem--document{padding:0}
+${tag} .ms-ListItem.ms-ListItem--document .ms-ListItem-itemIcon{width:70px;height:70px;float:left;text-align:center}
+${tag} .ms-ListItem.ms-ListItem--document .ms-ListItem-itemIcon .ms-Icon{font-size:38px;line-height:70px;color:#666}
+${tag} .ms-ListItem.ms-ListItem--document .ms-ListItem-primaryText{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;padding-top:15px;padding-right:0;position:static}
+${tag} .ms-ListItem.ms-ListItem--document .ms-ListItem-secondaryText{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#666;font-weight:400;font-size:11px;padding-top:6px}
+${tag} .ms-ListItem.is-selected .ms-ListItem-selectionTarget {transition-property:background,border,border-color;transition-duration:.2s;transition-timing-function:cubic-bezier(.4,0,.23,1);border-color: #0078d7;background-color:#0078d7}
+${tag} .ms-ListItem.is-selected .ms-ListItem-selectionTarget:after {content:"✓";position:absolute;left:3px;font-weight:900;font-size:10px;color:white}`
   d.head.appendChild(style);
 
 

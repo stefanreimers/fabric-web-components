@@ -50,7 +50,7 @@ class FabricContextualHost extends HTMLElement {
     // this.__setupUI();
     // this.__setListeners();
 
-    console.log('connectedCallback')
+    // console.log('connectedCallback')
 
     // Init target via selector in DOM attribute
     if (this._target.element == null) {
@@ -430,7 +430,7 @@ window.customElements.define('fabric-contextual-host', FabricContextualHost);
   let style = d.createElement('STYLE');
   style.textContent = `.ms-ContextualHost{font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;z-index:10;margin:16px auto;position:relative;min-width:10px;display:none;background-color:#fff;box-shadow:0 3px 5px 0 rgba(0,0,0,.4)}
 .ms-ContextualHost.is-positioned{position:absolute;margin:0}
-.ms-ContextualHost.is-open{display:inline-block}
+.ms-ContextualHost.is-open{display:inline-block !important}
 .ms-ContextualHost-beak{box-shadow:0 0 15px -5px #3c3c3c;position:absolute;width:28px;height:28px;background:#fff;border:1px solid #eaeaea;box-sizing:border-box;top:-6px;display:none;transform:rotate(45deg);z-index:0;outline:1px solid transparent}
 .ms-ContextualHost.ms-ContextualHost--arrowLeft .ms-ContextualHost-beak,.ms-ContextualHost.ms-ContextualHost--arrowRight .ms-ContextualHost-beak{top:40px;display:none}
 .ms-ContextualHost.ms-ContextualHost--arrowLeft .ms-ContextualHost-beak{left:-10px}

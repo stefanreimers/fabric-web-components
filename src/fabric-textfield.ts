@@ -156,7 +156,7 @@ class FabricTextfield extends HTMLElement {
   template() {
     let modifierClass = (this._modifier) ? 'ms-TextField--' + this._modifier : '';
     return `<div class="ms-TextField ${modifierClass}">
-      <label class="ms-Label"></label>
+      <label class="ms-Label hide-when-empty"></label>
       ${(this._modifier === 'multiline') ?
         '<textarea class="ms-TextField-field" name=""></textarea>' :
         '<input class="ms-TextField-field" type="' + this._type + '" name="" value="" placeholder=""/>'}
@@ -201,26 +201,31 @@ customElements.define('fabric-textfield', FabricTextfield);
   styles.dataset.fabric = id;
   document.getElementsByTagName('head')[0].appendChild(styles);
   function _getStyles() {
-    return `fabric-textfield:unresolved,
-    fabric-textfield:not(:defined),
-    fabric-textfield > *:not(.ms-TextField) {
+    const tag = 'fabric-textfield';
+    return `${tag}:unresolved,
+    ${tag}:not(:defined),
+    ${tag} > *:not(.ms-TextField) {
       opacity: 0;
       visibility: hidden;
     }
+
+    ${tag} .hide-when-empty:empty {
+      display: none
+    }
     
-    fabric-textfield .ms-TextField.ms-TextField--multiline {
+    ${tag} .ms-TextField.ms-TextField--multiline {
       height: 100%
     }
 
-    fabric-textfield .ms-TextField.ms-TextField--multiline label + textarea {
+    ${tag} .ms-TextField.ms-TextField--multiline label + textarea {
       height: calc(100% - 20px)
     }
 
-    fabric-textfield .ms-TextField.ms-TextField--multiline label:empty + textarea {
+    ${tag} .ms-TextField.ms-TextField--multiline label:empty + textarea {
       height: 100%
     }
 
-fabric-textfield .ms-TextField {
+${tag} .ms-TextField {
   font-family: 'Segoe UI WestEuropean', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
@@ -233,51 +238,51 @@ fabric-textfield .ms-TextField {
   margin-bottom: 8px;
 }
 
-fabric-textfield .ms-TextField .ms-Label:empty,
-fabric-textfield .ms-TextField .ms-Label:empty::after,
-fabric-textfield .ms-TextField .ms-TextField-description:empty {
+${tag} .ms-TextField .ms-Label:empty,
+${tag} .ms-TextField .ms-Label:empty::after,
+${tag} .ms-TextField .ms-TextField-description:empty {
   display: none
 }
 
-fabric-textfield .ms-TextField .ms-Label {
+${tag} .ms-TextField .ms-Label {
   font-size: 14px;
   font-weight: 600;
   font-family: 'Segoe UI WestEuropean', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-fabric-textfield .ms-TextField.is-disabled .ms-TextField-field {
+${tag} .ms-TextField.is-disabled .ms-TextField-field {
   background-color: #f4f4f4;
   border-color: #f4f4f4;
   pointer-events: none;
   cursor: default;
 }
 
-fabric-textfield .ms-TextField.is-disabled::-webkit-input-placeholder {
+${tag} .ms-TextField.is-disabled::-webkit-input-placeholder {
   color: #a6a6a6;
 }
 
-fabric-textfield .ms-TextField.is-disabled::-moz-placeholder {
+${tag} .ms-TextField.is-disabled::-moz-placeholder {
   color: #a6a6a6;
 }
 
-fabric-textfield .ms-TextField.is-disabled:-moz-placeholder {
+${tag} .ms-TextField.is-disabled:-moz-placeholder {
   color: #a6a6a6;
 }
 
-fabric-textfield .ms-TextField.is-disabled:-ms-input-placeholder {
+${tag} .ms-TextField.is-disabled:-ms-input-placeholder {
   color: #a6a6a6;
 }
 
-fabric-textfield .ms-TextField-field[readonly]{
+${tag} .ms-TextField-field[readonly]{
   background: #fafafa;
 }
 
-fabric-textfield[required] .ms-Label::after {
+${tag}[required] .ms-Label::after {
   content: ' *';
   color: #a80000;
 } 
-fabric-textfield .ms-TextField.is-required .ms-Label::after {
+${tag} .ms-TextField.is-required .ms-Label::after {
   content: ' *';
   color: #a80000;
 }
@@ -299,7 +304,7 @@ fabric-textfield .ms-TextField.is-required .ms-Label::after {
 }
 
 .ms-TextField.is-active {
-  border-color: var(--fabric-textfield-border-active, #0078d7);
+  border-color: var(--${tag}-border-active, #0078d7);
 }
 
 .ms-TextField-field {
@@ -309,7 +314,7 @@ fabric-textfield .ms-TextField.is-required .ms-Label::after {
   box-shadow: none;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--fabric-textfield-border, #c8c8c8);
+  border-color: var(--${tag}-border, #c8c8c8);
   border-radius: 0;
   font-weight: 300;
   font-size: 14px;
@@ -324,12 +329,12 @@ fabric-textfield .ms-TextField.is-required .ms-Label::after {
 }
 
 .ms-TextField-field:hover {
-  border-color: var(--fabric-textfield-border-hover, #767676);
+  border-color: var(--${tag}-border-hover, #767676);
 }
 
 .ms-TextField-field:focus,
 .ms-TextField-field:focus-within {
-  border-color: var(--fabric-textfield-border-focus, #0078d7);
+  border-color: var(--${tag}-border-focus, #0078d7);
 }
 
 @media screen and (-ms-high-contrast: active) {
@@ -348,7 +353,7 @@ fabric-textfield .ms-TextField.is-required .ms-Label::after {
 
 .ms-TextField-field[disabled] {
   background-color: #f4f4f4;
-  border-color: var(--fabric-textfield-border-disabled, #f4f4f4);
+  border-color: var(--${tag}-border-disabled, #f4f4f4);
   pointer-events: none;
   cursor: default;
 }

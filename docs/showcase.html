@@ -36,6 +36,11 @@
 	margin-bottom: 1em;
 	}
 
+  .ms-Icon.ms-Icon--Delete { background-image: url("data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48.000001' height='48' width='48' version='1.1'%3E%3Cdefs/%3E%3Cg fill='gray' transform='matrix(0.73993087,0,0,0.73993087,-37.063304,-383.49814)'%3E%3Cpath d='m 60.44328,532.94531 0,42.49024 c 0,3.53147 2.843526,6.37304 6.375,6.37304 l 30.744141,0 c 3.531479,0 6.373049,-2.84157 6.373049,-6.37304 l 0,-42.49024 -4.000002,0 0,41.91211 c 0,1.84517 -1.484906,3.33008 -3.330078,3.33008 l -28.830078,0 c -1.845172,0 -3.332032,-1.48491 -3.332032,-3.33008 l 0,-41.91211 -4,0 z' style='stroke:none' /%3E%3Cpath d='m 74.939453,519.64062 c -1.665761,0 -3.007812,1.3401 -3.007812,3.00586 l 0,3.70899 -15.759766,0 0,4 52.035155,0 0,-4 -15.759764,0 0,-3.70899 c 0,-1.66576 -1.340095,-3.00586 -3.00586,-3.00586 l -14.501953,0 z m 1.056641,2.62305 12.167968,0 c 0.778695,0 1.404297,0.62755 1.404297,1.40625 l 0,2.68555 -14.978515,0 0,-2.68555 c 0,-0.7787 0.627555,-1.40625 1.40625,-1.40625 z' style='stroke:none' /%3E%3Cg%3E%3Cpath d='m 71.953331,539.13025 3.913779,0 0,30.55759 -3.913779,0 z' style='stroke:none' /%3E%3Cpath d='m 88.511635,539.13025 3.913779,0 0,30.55759 -3.913779,0 z' style='stroke:none' /%3E%3Cpath d='m 80.232483,539.13025 3.913779,0 0,30.55759 -3.913779,0 z' style='stroke:none' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+
+    .ms-Icon.ms-Icon--ChevronDown {background-image: url("data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E%3Csvg width='48px' height='48px' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.36612 16.1161C7.87796 16.6043 7.87796 17.3957 8.36612 17.8839L23.1161 32.6339C23.6043 33.122 24.3957 33.122 24.8839 32.6339L39.6339 17.8839C40.122 17.3957 40.122 16.6043 39.6339 16.1161C39.1457 15.628 38.3543 15.628 37.8661 16.1161L24 29.9822L10.1339 16.1161C9.64573 15.628 8.85427 15.628 8.36612 16.1161Z' fill='#212121'/%3E%3C/svg%3E");}
+
+
   </style>
 
 
@@ -43,7 +48,7 @@
 </head>
 <body class="flex-container vertical overlap">
 
-	<details >
+	<details open>
 		<summary>Buttons</summary>
 		<section class="buttons">
 		<fabric-button label="Click me"></fabric-button>
@@ -52,17 +57,28 @@
 		<fabric-button label="Small button" modifier="small"></fabric-button>
 		<fabric-button label="Don't click me, I am disabled" disabled></fabric-button>
 		<fabric-button label="Click me" description='I am a compound button with some descriptive text' modifier="compound"></fabric-button>
+    <!-- <fabric-command-button label="Click Command" split="1" modifier="textOnly"></fabric-command-button> -->
 		</section>
 	</details>
 
 
-	<details open>
+	<details >
 	<summary>Textfields</summary>
 	<section class="textfield" >
-		<!-- <fabric-textfield style="display:block; width: 300px" value="dghv" label="Normal text field"></fabric-textfield>
+		<fabric-textfield style="display:block; width: 300px" value="dghv" label="Normal text field"></fabric-textfield>
 		<fabric-textfield style="display:block; width: 300px" value="dghv" required label="Required text field"></fabric-textfield>
-		<fabric-textfield style="display:block; width: 300px" value="dghv" disabled label="Disabled text field"></fabric-textfield> -->
+		<fabric-textfield style="display:block; width: 300px" value="dghv" disabled label="Disabled text field"></fabric-textfield>
+
+    <fabric-textfield style="display:block; width: 300px" type="number" label="Numeric text field"></fabric-textfield>
+
+    <fabric-textfield style="display:block; width: 300px" type="date" value="dghv" label="Date text field"></fabric-textfield>
+    <fabric-textfield style="display:block; width: 300px" type="time" value="dghv" label="Time text field"></fabric-textfield>
+    <fabric-textfield style="display:block; width: 300px" type="datetime-local" value="dghv" label="Datetime text field"></fabric-textfield>
+
 		<fabric-textfield style="display:block; width: 300px" label="Multiline" modifier="multiline">Some text</fabric-textfield>
+
+    <fabric-structured-textfield style="display:block; width: 500px" label="Code">Some text</fabric-structured-textfield>
+
 		<fabric-search label="Search field"></fabric-search>
 	</section>
 	</details>
@@ -99,10 +115,10 @@
 	</section>
 	</details>
 	
-	<details>
+	<details open>
 	<summary>Dropdown</summary>
 	<section class="dropdown" >
-	 <fabric-select>
+	 <fabric-select label="Choose an option">
 		 <option name="bla" value="bla">bla</option>
 		 <option name="blub" value="blub">blub</option>
 		 <option name="foo" value="foo">foo</option>
@@ -198,14 +214,17 @@
 	<script src="../dist/fabric-contextual-menu.js" type="text/javascript"></script>
 	<script src="../dist/fabric-tabs.js" type="text/javascript"></script>
 	<script src="../dist/fabric-pivot.js" type="text/javascript"></script>
+  <script src="../dist/fabric-command-button.js" type="text/javascript"></script>
 	<script src="../dist/fabric-select.js" type="text/javascript"></script>
 	<script src="../dist/fabric-search.js" type="text/javascript"></script>
 	<script src="../dist/fabric-textfield.js" type="text/javascript"></script>
+  <script src="../dist/fabric-structured-textfield.js" type="text/javascript"></script>
 	<script src="../dist/fabric-toggle.js" type="text/javascript"></script>
   <script src="../dist/fabric-slider.js" type="text/javascript"></script>
   <script src="../dist/fabric-meter.js" type="text/javascript"></script>
 	<script src="../dist/fabric-progress.js" type="text/javascript"></script>
 	<script src="../dist/fabric-breadcrumb.js" type="text/javascript"></script>
+  
 	
 	<script>
 	
@@ -293,6 +312,21 @@
 	});
 	
 	</script>
+
+
+<script>
+
+  document.querySelector('fabric-select').options = [
+    { class: 'new-snippet php', text: 'PHP', icon: 'Delete' },
+    { class: 'new-snippet js', text: 'Javascript' },
+    { class: 'new-snippet ts', text: 'Typescript' },
+    { class: 'new-snippet css', text: 'CSS' },
+    { class: 'new-snippet html', text: 'HTML' },
+    { class: 'new-snippet md', text: 'Markdown' },
+    { class: 'new-snippet sql', text: 'SQL' }
+  ];
+
+</script>
 	
 </body>
 </html>

@@ -1,16 +1,16 @@
 class FabricSelect extends HTMLElement {
 
   private _refs: {
-    container?: HTMLElement,
-    select?: HTMLSelectElement,
-    chevron?: any,
-    label?: HTMLLabelElement
+    label?: any,
+    button?: any
   };
   private _disabled: boolean;
   private _required: boolean;
   private _multiple: boolean;
   private _name: string | null;
   private _label: string | null;
+  private _options: any[];
+  private _value: any;
 
   constructor() {
     super();
@@ -20,6 +20,8 @@ class FabricSelect extends HTMLElement {
     this._multiple = false;
     this._name = null;
     this._label = null;
+    this._options = [];
+    this._value = null;
 
   }
 
@@ -32,14 +34,12 @@ class FabricSelect extends HTMLElement {
   get multiple() { return this._multiple; }
   set multiple(value) { if (this._multiple === value) return; this._multiple = !!value; this.__setProperties('multiple'); }
 
-  get value() {
-    if (!this._refs.select) return null;
-    if (!this.multiple) return this._refs.select.value;
-    //@ts-ignore
-    return Object.keys(this._refs.select.selectedOptions).map(i => { let j = this._refs.select.selectedOptions[i]; return j.value || j.textContent })
-  }
+  get value() { return this._value; }
   //@ts-ignore
-  set value(val) { if (this._refs.select && val != this.value) this._refs.select.value = val; }
+  set value(val) {
+    // Find 
+    console.log('TODO');
+  }
 
   get label() { return this._label }
   set label(value) { if (value === this._label) return; this._label = value; this.__setProperties('label'); }
@@ -47,7 +47,8 @@ class FabricSelect extends HTMLElement {
   get name() { return this._name }
   set name(value) { if (value === this._name) return; this._name = value; }
 
-  get options() { return (this._refs.select) ? this._refs.select.querySelectorAll('option:not([hidden])') : null }
+  get options(): any { return this._options || []; }
+  set options(value) { this._options = [].concat(value); this.__setProperties('options'); }
 
   connectedCallback() {
 
@@ -59,89 +60,68 @@ class FabricSelect extends HTMLElement {
 
   private __setupUI() {
 
-    let markup = `<div class="ms-Dropdown" tabindex="0">
-			<label class="ms-Label"></label>
-			<select class="ms-Dropdown-select">
-				<option value="" disabled selected hidden>Choose an option...</option>
-			</select>
-			<i class="ms-Dropdown-caretDown _ms-Icon ms-Icon--ChevronDown chevron"></i></div>`;
+    let markup = `
+      <label class="ms-Label hide-when-empty"></label>
+      <div style="display:flex">
+        <fabric-command-button class="selector" style="flex-grow:1"></fabric-command-button>
+        <button class="ms-SelectClearButton is-hidden">
+          X
+			</button>
+      </div>`;
 
-    // Move predefined options to new markup
-    if (this.children && this.children.length > 0) {
-
-      const div = document.createElement('DIV');
-      div.innerHTML = markup;
-      const contentContainer = div.querySelector('select');
-
-      if (contentContainer) {
-        while (this.children.length > 0) {
-
-          // Check conditions - remove non-matching children
-          if (this.children[0].tagName.toLowerCase() === 'option') {
-
-            // Move child to container
-            contentContainer.appendChild(this.children[0]);
-
-          } else {
-            this.removeChild(this.children[0]);
-          }
-        }
-
-        this.appendChild(div.children[0]);
-
-      } else {
-        this.innerHTML = markup;
-      }
-    }
+    this.innerHTML = markup;
 
     // Update references
     this._refs = {
-      //@ts-ignore
-      container: this.querySelector('.ms-Dropdown'),
-      //@ts-ignore
-      select: this.querySelector('select'),
-      //@ts-ignore
-      label: this.querySelector('label'),
-      chevron: this.querySelector('i')
+      button: this.querySelector('fabric-command-button.selector'),
+      label: this.querySelector('.ms-Label')
     }
-
 
   }
 
   private __setProperties(property?: string) {
 
-    if (!this._refs || !this._refs.container) return;
+    if (!this._refs || !this._refs.button) return;
 
 
     if (property == null || property === 'disabled') {
-      if (this._refs.select) this._refs.select.disabled = this._disabled;
-      this._refs.container.classList[(this._disabled) ? 'add' : 'remove']('is-disabled')
+      if (this._refs.button) this._refs.button.disabled = this._disabled;
+    }
+
+    if (property == null || property === 'options') {
+
+      console.log('__setProperties, options');
+
+      if (this._refs.button) {
+        this._refs.button.items = this.options;
+      } else {
+        console.log('Too early');
+      }
     }
 
     if (property == null || property === 'required') {
-      if (this._refs.select) this._refs.select.required = this._required;
-      this._refs.container.classList[(this._required) ? 'add' : 'remove']('is-required')
+      if (this._refs.label) this._refs.label.classList[this._required ? 'add' : 'remove']('is-required');
     }
 
-    if (property == null || property === 'multiple') {
-      if (this._refs.select) this._refs.select.multiple = this._multiple;
-      this._refs.container.classList[(this._multiple) ? 'add' : 'remove']('is-multiple')
-      try {
-        if (this.multiple === true) {
-          if (this._refs.select) {
-            let hidden = this._refs.select.querySelector('option[value=""][selected]')
-            if (hidden) hidden.removeAttribute('selected');
-          }
-        } else {
-          if (this.value == null || this.value === '') {
-            if (this._refs.select) {
-              let hidden = this._refs.select.querySelector('option[value=""]')
-              if (hidden) hidden.setAttribute('selected', '');
-            }
-          }
-        }
-      } catch (e) { console.log(e) }
-    }
+    // if (property == null || property === 'multiple') {
+    //   if (this._refs.select) this._refs.select.multiple = this._multiple;
+    //   this._refs.container.classList[(this._multiple) ? 'add' : 'remove']('is-multiple')
+    //   try {
+    //     if (this.multiple === true) {
+    //       if (this._refs.select) {
+    //         let hidden = this._refs.select.querySelector('option[value=""][selected]')
+    //         if (hidden) hidden.removeAttribute('selected');
+    //       }
+    //     } else {
+    //       if (this.value == null || this.value === '') {
+    //         if (this._refs.select) {
+    //           let hidden = this._refs.select.querySelector('option[value=""]')
+    //           if (hidden) hidden.setAttribute('selected', '');
+    //         }
+    //       }
+    //     }
+    //   } catch (e) { console.log(e) }
+    // }
 
     if (property == null || property === 'label') {
       if (this._refs.label) this._refs.label.textContent = this._label || ''
@@ -150,36 +130,83 @@ class FabricSelect extends HTMLElement {
   }
 
   private __addListeners() {
-    if (!this._refs.select) return;
-    this._refs.select.addEventListener('change', (e) => {
 
-      if (this.multiple === true) return;
+    if (!this._refs.button) return;
 
-      //@ts-ignore
-      let value = (e && e.target) ? e.target.value : null;
-      if (!value) return;
+    this.addEventListener('contextual-menu-link-click', (e: any) => {
+      console.log('contextual-menu-link-click on select menu', e);
+      e.preventDefault();
 
-      //@ts-ignore
-      let unselect = this._refs.select.querySelectorAll('option.is-selected:not([value="' + value + '"])');
-      if (unselect && unselect.length > 0) {
-        [].forEach.call(unselect, (element: HTMLOptionElement) => {
-
-          (<HTMLElement>element).classList.remove('is-selected');
-        });
+      var newlySelected = e.detail?.node;
+      if (!newlySelected) {
+        this._refs.button.click();
+        return;
       }
 
-      //@ts-ignore
-      let select = this._refs.select.querySelector('option[value="' + value + '"]');
-      if (select && !select.classList.contains('is-selected')) {
-        select.classList.add('is-selected');
+      var contextualMenuItem = newlySelected.closest('.ms-ContextualMenu-item');
+
+      // Maybe cancel
+      if (newlySelected.classList.contains('is-disabled') || (contextualMenuItem && contextualMenuItem.classList.contains('ms-ContextualMenu-item--header'))) {
+        this._refs.button.click();
+        return;
       }
 
-    })
+
+      if (this.multiple !== true) {
+        // Remove previous selected item
+        var preSelected = this._refs.button.querySelector('.is-selected');
+        if (preSelected) preSelected.classList.remove('is-selected')
+      }
+
+      newlySelected.classList.add('is-selected');
+      this._value = JSON.parse(window.atob(newlySelected.parentElement.dataset.source));
+
+      // Update UI
+      if (this.multiple === true) {
+
+      } else {
+        var icon = contextualMenuItem.querySelector('.ms-Icon');
+        //@ts-expect-error
+        this._refs.button.icon = (icon) ? (/ms-Icon--(\w+)/.exec(icon.className))[1] : null;
+        this._refs.button.label = newlySelected.textContent;
+
+        // Close menu
+        this._refs.button.click();
+      }
+
+    }, { capture: true })
 
   }
 
+  // __setValue(val: string) {
+
+  //   // var newlySelected = this._refs.menu.
+
+  //   if (this.multiple !== true) {
+  //     // Remove previous selected item
+  //     var preSelected = this._refs.menu.querySelector('.is-selected');
+  //     if (preSelected) preSelected.classList.remove('is-selected')
+  //   }
+
+  //   newlySelected.classList.add('.is-selected');
+
+  //   // Update UI
+  //   if (this.multiple === true) {
+
+  //   } else {
+  //     var icon = contextualMenuItem.querySelector('.ms-Icon');
+  //     //@ts-expect-error
+  //     this._refs.button.icon = (icon) ? (/ms-Icon--(\w+)/.exec(icon.className))[1] : null;
+  //     this._refs.button.label = newlySelected.textContent;
+
+  //     // Close menu
+  //     this._refs.button.click();
+  //   }
+
+  // }
+
   static get observedAttributes() {
-    return ['label', 'disabled', 'required', 'multiple', 'name'];
+    return ['label', 'disabled', 'required', 'multiple', 'name', 'value', 'items'];
   }
 
   attributeChangedCallback(attr: string, oldValue: string | null, newValue: string | null) {
@@ -201,7 +228,7 @@ class FabricSelect extends HTMLElement {
     }
 
     //@ts-ignore
-    return this._refs.select.checkValidity();
+    return true
   }
 
 }
@@ -210,125 +237,122 @@ window.customElements.define('fabric-select', FabricSelect);
 // Set styles
 (function (w, d) {
 
-  let style = d.createElement('STYLE');
-  style.textContent = `fabric-select { 
+  'use strict';
+  let id = 'select';
+  const node = document.querySelector('style[data-fabric="' + id + '"]');
+  if (node) {
+    return;
+  }
+  var styles = document.createElement("style");
+  styles.type = 'text/css';
+  styles.innerHTML = _getStyles();
+  styles.dataset.fabric = id;
+  document.getElementsByTagName('head')[0].appendChild(styles);
+  function _getStyles() {
+    const tag = 'fabric-select';
+    return `${tag} {
 	display: inline-block;
 	font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;
-}
-fabric-select select {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	
-	border:1px solid #c8c8c8;
-	border-radius: 0;
-	font-size: 14px;
-	
-	width: 100%;
-	min-width: 100px;
-	min-height: 32px;
-
-	padding: 0px 30px 0px 10px;
-	/*background-color:#fff;*/
-	color:black;
-	
-	box-sizing: border-box;
+  min-width: 180px;
 }
 
-fabric-select select:hover {
-border-color: #767676;
+${tag} > div {
+    box-sizing: border-box;
+margin: 0;
+padding: 0;
+box-shadow: none;
+border-width: 1px;
+border-style: solid;
+border-color: var(--fabric-structured-textfield-border, #c8c8c8);
+border-radius: 0;
+font-weight: 300;
+font-size: 14px;
+color: #333333;
+min-width: 180px;
+outline: 0;
+text-overflow: ellipsis;
+background-color: white;
 }
 
-fabric-select select:focus {
-border-color: #0078d7;
-}
-	
-fabric-select select::-ms-expand {
-  display:none;
+${tag} > div:hover {
+  border-color: var(--${tag}-border-hover, #767676);
 }
 
-fabric-select select option {
-  padding: 5px 8px 5px 10px;
-  border-top:0px /*solid #444;*/
-
-}
-fabric-select select option{
-	box-shadow: 0 0 5px 0 rgba(0,0,0,.4)
+${tag} > div:focus,
+${tag} > div:focus-within {
+  border-color: var(--${tag}-border-focus, #0078d7);
 }
 
-fabric-select select:not([multiple]) option.is-selected {
-	background-color: #b3d6f2;
-	color: #000;
+${tag} .selector {
+  width: 100%;
+  height: 100%;
+  display:block;
+  box-sizing: border-box;
+  height: 32px;
+--size: 32px;
+
 }
 
-fabric-select .chevron{
-    display:inline-block;
-    height:12px;/*height should be double border*/
-	
-}
-fabric-select .chevron:before,
-fabric-select .chevron:after{
-    position:absolute;
-    display:block;
-    content:"";
-    border:6px solid transparent;/*adjust size*/
-	left: -20px;
-	margin-top: 5px;
-}
-/* Replace all text top below with left/right/bottom to rotate the chevron */
-fabric-select .chevron:before{
-    top:0;
-    border-top-color:#aaa;/*chevron Color*/
-}
-fabric-select .chevron:after{
-    top:-1px;/*adjust thickness*/
-    border-top-color:#fff;/*Match background colour*/
-}
-fabric-select .is-disabled .chevron:after{
-    top:-1px;/*adjust thickness*/
-    border-top-color:#f4f4f4;/*Match background colour*/
+${tag} .selector .ms-CommandButton .ms-CommandButton-button,
+${tag} .selector .ms-CommandButton{
+  max-height: 100%;
+  width: 100%;
+  display: flex;
+  border: 0;
 }
 
-fabric-select select[disabled] {
-	background-color: #f4f4f4;
-	color: #a6a6a6;
-	border-color: #f4f4f4
+${tag} .selector .ms-CommandButton .ms-CommandButton-button .ms-CommandButton-label {
+  flex-grow: 1;
+  text-align: left;
+  line-height: calc(var(--size, 40px) - 2px);
 }
 
-.ms-Dropdown{
-	font-family:Segoe UI WestEuropean,Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;
-	box-sizing:border-box;margin:0;padding:0;box-shadow:none;color:#333;font-size:14px;font-weight:400;margin-bottom:10px;position:relative;outline:0}
-.ms-Dropdown:active .ms-Dropdown-caretDown:before,
-.ms-Dropdown:focus .ms-Dropdown-caretDown:before,
-.ms-Dropdown:hover .ms-Dropdown-caretDown:before{
-	border-top-color:#000
+${tag} .selector .ms-CommandButton .ms-CommandButton-button:focus:before,
+${tag} .selector .ms-CommandButton .ms-CommandButton-splitIcon:focus:before{top:0;left:0px;right:0px;bottom:0px;border:0;position:absolute;z-index:10;content:"";outline:none}
+
+
+
+${tag} .ms-CommandButton-button:hover,
+${tag} .ms-CommandButton-splitIcon:hover{background-color:transparent}
+
+
+
+${tag} .ms-CommandButton-icon{
+  min-width: auto;
+  margin-right: 0;
 }
 
-.ms-Dropdown .ms-Label{
-	display:inline-block;
-	margin-bottom:8px;
-	font-size: 12px
+${tag} .ms-CommandButton-icon i[class="ms-Icon"]{
+  display: none;
 }
 
-.ms-Dropdown.is-disabled .ms-Dropdown-caretDown:before{
-	border-top-color:#a6a6a6
+${tag} .ms-CommandButton-icon i.ms-Icon{
+  margin-right: 8px;
 }
 
-.ms-Dropdown-caretDown{
-	color:#212121;font-size:12px;position:absolute;right:5px;bottom:11px;z-index:1;pointer-events:none
+${tag} .ms-Label:empty,
+${tag} .ms-Label:empty::after,
+${tag} .ms-TextField-description:empty {
+  display: none
 }
 
-fabric-select select[multiple]{
-	padding: 0;
+${tag} .ms-Label {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Segoe UI WestEuropean', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-fabric-select select[multiple] > option {
-	box-shadow: none;
+${tag} .ms-Label.is-required::after {
+    content: ' *';
+    color: #a80000;
 }
 
-fabric-select select[multiple] ~ i {
-	display: none
+.ms-SelectClearButton {
+  background-color: transparent;
+border: 0;
+}
+
 }`;
-
-  d.head.appendChild(style);
-})(window, document);
+  }
+}(window, document));

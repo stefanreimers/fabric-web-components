@@ -66,7 +66,13 @@ class FabricContextualMenu extends FabricContextualHost {
       entry.classList.add('ms-ContextualMenu-item');
 
       // Set links
-      if (!entry.classList.contains('header') && !entry.classList.contains('divider')) entry.innerHTML = '<a class="ms-ContextualMenu-link" tabindex="1">' + entry.textContent + '</a>';
+      if (!entry.classList.contains('header') && !entry.classList.contains('divider')) {
+        let icon = entry.querySelector('i');
+        let iconClasses = (icon) ? icon.className : null;
+        entry.innerHTML = '<span class="ms-ContextualMenu-link" tabindex="1">' + (entry.textContent || '').trim() + '</span>' + ((iconClasses) ? `<i class="${iconClasses}"></i>` : '');
+
+        if (iconClasses) this._refs.menu.classList.add('ms-ContextualMenu--hasIcons')
+      }
 
       // Set header and divider class
       if (entry.classList.contains('header')) { entry.classList.add('ms-ContextualMenu-item--header'); entry.classList.remove('header'); }
@@ -99,7 +105,7 @@ class FabricContextualMenu extends FabricContextualHost {
 
     if (!this._host) {
       //throw RangeError('No host defined');
-      console.log('No host defined');
+      // console.log('No host defined');
       return;
     }
 
@@ -179,7 +185,7 @@ window.customElements.define('fabric-contextual-menu', FabricContextualMenu);
 .ms-ContextualMenu.ms-ContextualMenu--multiselect .ms-ContextualMenu-link.is-selected:active{color:#000;background-color:#d0d0d0}
 .ms-ContextualMenu.ms-ContextualMenu--multiselect .ms-ContextualMenu-link.is-selected:active:after{color:#000}
 .ms-ContextualMenu.ms-ContextualMenu--hasChecks .ms-ContextualMenu-link,.ms-ContextualMenu.ms-ContextualMenu--hasIcons .ms-ContextualMenu-link{padding-left:40px}
-.ms-ContextualMenu.ms-ContextualMenu--hasChecks .ms-Icon,.ms-ContextualMenu.ms-ContextualMenu--hasIcons .ms-Icon{position:absolute;top:50%;transform:translateY(-50%);width:40px;text-align:center}
+.ms-ContextualMenu.ms-ContextualMenu--hasChecks .ms-Icon,.ms-ContextualMenu.ms-ContextualMenu--hasIcons .ms-Icon{position:absolute;top:50%;transform:translateY(-50%);width:40px;text-align:center;background-repeat: no-repeat;background-position-x: center;}
 .ms-ContextualMenu.ms-ContextualMenu--hasIcons{width:220px}`;
   d.head.appendChild(style);
 })(window, document);
