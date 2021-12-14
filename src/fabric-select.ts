@@ -36,10 +36,7 @@ class FabricSelect extends HTMLElement {
 
   get value() { return this._value; }
   //@ts-ignore
-  set value(val) {
-    // Find 
-    console.log('TODO');
-  }
+  set value(val) { if (this._disabled === true) return; const changed = this.__setValue(val); if (changed) this.__setProperties('value'); }
 
   get label() { return this._label }
   set label(value) { if (value === this._label) return; this._label = value; this.__setProperties('label'); }
@@ -103,25 +100,28 @@ class FabricSelect extends HTMLElement {
       if (this._refs.label) this._refs.label.classList[this._required ? 'add' : 'remove']('is-required');
     }
 
-    // if (property == null || property === 'multiple') {
-    //   if (this._refs.select) this._refs.select.multiple = this._multiple;
-    //   this._refs.container.classList[(this._multiple) ? 'add' : 'remove']('is-multiple')
-    //   try {
-    //     if (this.multiple === true) {
-    //       if (this._refs.select) {
-    //         let hidden = this._refs.select.querySelector('option[value=""][selected]')
-    //         if (hidden) hidden.removeAttribute('selected');
-    //       }
-    //     } else {
-    //       if (this.value == null || this.value === '') {
-    //         if (this._refs.select) {
-    //           let hidden = this._refs.select.querySelector('option[value=""]')
-    //           if (hidden) hidden.setAttribute('selected', '');
-    //         }
-    //       }
-    //     }
-    //   } catch (e) { console.log(e) }
-    // }
+    if (property == null || property === 'value') {
+
+      if (this._refs.button) {
+        this._refs.button.icon = (this._value && this._value.icon) ? this._value.icon : null;
+        this._refs.button.label = (this._value) ? this._value.text || this._value.value || this._value.id : '-';
+
+        // Remove .is-selected from previous entry
+        if (this.multiple !== true) {
+          // Remove previous selected item
+          var preSelected = this._refs.button.querySelector('.is-selected');
+          if (preSelected) preSelected.classList.remove('is-selected')
+        }
+
+        // Set .is-selected on new entry
+        const key = window.btoa(JSON.stringify(this._value));
+        console.log('key', key);
+        let selection = this._refs.button.querySelector('[data-source="' + key + '"]> .ms-ContextualMenu-link');
+        if (selection) selection.classList.add('is-selected');
+
+      }
+
+    }
 
     if (property == null || property === 'label') {
       if (this._refs.label) this._refs.label.textContent = this._label || ''
@@ -178,32 +178,98 @@ class FabricSelect extends HTMLElement {
 
   }
 
-  // __setValue(val: string) {
+  private __setValue(val: any): boolean {
 
-  //   // var newlySelected = this._refs.menu.
+    if (val == null) {
+      if (this._value != null) {
+        this._value = null; return true;
+      } else {
+        return false;
+      }
+    }
 
-  //   if (this.multiple !== true) {
-  //     // Remove previous selected item
-  //     var preSelected = this._refs.menu.querySelector('.is-selected');
-  //     if (preSelected) preSelected.classList.remove('is-selected')
-  //   }
 
-  //   newlySelected.classList.add('.is-selected');
+    // value can be either number|string or an object
+    // When scalar the value will be searched in id, value, text fields of options
+    // When object the value will be searched by key in options
+    if (typeof val == 'string' || typeof val === 'number') {
 
-  //   // Update UI
-  //   if (this.multiple === true) {
+      let selected = this.options.filter((item: any) => {
+        return (item.hasOwnProperty('id') && item.id === val) ||
+          (item.hasOwnProperty('value') && item.value === val) ||
+          (item.hasOwnProperty('text') && item.text === val)
+      })
 
-  //   } else {
-  //     var icon = contextualMenuItem.querySelector('.ms-Icon');
-  //     //@ts-expect-error
-  //     this._refs.button.icon = (icon) ? (/ms-Icon--(\w+)/.exec(icon.className))[1] : null;
-  //     this._refs.button.label = newlySelected.textContent;
+      if (selected.length === 0) {
+        return false;
+      } else {
+        selected = selected[0];
 
-  //     // Close menu
-  //     this._refs.button.click();
-  //   }
+        if (Object.is(selected, this._value)) {
+          return false;
+        } else {
+          this._value = selected;
+          return true;
+        }
+      }
 
-  // }
+    } else if (typeof val == 'object' && !Array.isArray(val)) {
+
+      // Direct copy
+      if (Object.is(this._value, val)) return false;
+
+      // For now: Take first property 
+      let key = Object.keys(val)[0];
+      if (key == null) return false;
+
+      let selected = this.options.filter((item: any) => {
+        return (item.hasOwnProperty(key) && item[key] === val[key])
+      })
+
+      if (selected.length === 0) {
+        return false;
+      } else {
+        selected = selected[0];
+        if (Object.is(selected, this._value)) {
+          return false;
+        } else {
+          this._value = selected;
+          return true;
+        }
+      }
+
+
+      return false;
+    }
+
+    return false;
+
+
+
+    // // var newlySelected = this._refs.menu.
+
+    // if (this.multiple !== true) {
+    //   // Remove previous selected item
+    //   var preSelected = this._refs.menu.querySelector('.is-selected');
+    //   if (preSelected) preSelected.classList.remove('is-selected')
+    // }
+
+    // newlySelected.classList.add('.is-selected');
+
+    // // Update UI
+    // if (this.multiple === true) {
+
+    // } else {
+    //   var icon = contextualMenuItem.querySelector('.ms-Icon');
+    //   //@ts-expect-error
+    //   this._refs.button.icon = (icon) ? (/ms-Icon--(\w+)/.exec(icon.className))[1] : null;
+    //   this._refs.button.label = newlySelected.textContent;
+
+    //   // Close menu
+    //   this._refs.button.click();
+    // }
+
+  }
 
   static get observedAttributes() {
     return ['label', 'disabled', 'required', 'multiple', 'name', 'value', 'items'];

@@ -21,9 +21,9 @@ class FabricSelect extends HTMLElement {
     set multiple(value) { if (this._multiple === value)
         return; this._multiple = !!value; this.__setProperties('multiple'); }
     get value() { return this._value; }
-    set value(val) {
-        console.log('TODO');
-    }
+    set value(val) { if (this._disabled === true)
+        return; const changed = this.__setValue(val); if (changed)
+        this.__setProperties('value'); }
     get label() { return this._label; }
     set label(value) { if (value === this._label)
         return; this._label = value; this.__setProperties('label'); }
@@ -72,6 +72,22 @@ class FabricSelect extends HTMLElement {
             if (this._refs.label)
                 this._refs.label.classList[this._required ? 'add' : 'remove']('is-required');
         }
+        if (property == null || property === 'value') {
+            if (this._refs.button) {
+                this._refs.button.icon = (this._value && this._value.icon) ? this._value.icon : null;
+                this._refs.button.label = (this._value) ? this._value.text || this._value.value || this._value.id : '-';
+                if (this.multiple !== true) {
+                    var preSelected = this._refs.button.querySelector('.is-selected');
+                    if (preSelected)
+                        preSelected.classList.remove('is-selected');
+                }
+                const key = window.btoa(JSON.stringify(this._value));
+                console.log('key', key);
+                let selection = this._refs.button.querySelector('[data-source="' + key + '"]> .ms-ContextualMenu-link');
+                if (selection)
+                    selection.classList.add('is-selected');
+            }
+        }
         if (property == null || property === 'label') {
             if (this._refs.label)
                 this._refs.label.textContent = this._label || '';
@@ -110,6 +126,62 @@ class FabricSelect extends HTMLElement {
                 this._refs.button.click();
             }
         }, { capture: true });
+    }
+    __setValue(val) {
+        if (val == null) {
+            if (this._value != null) {
+                this._value = null;
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        if (typeof val == 'string' || typeof val === 'number') {
+            let selected = this.options.filter((item) => {
+                return (item.hasOwnProperty('id') && item.id === val) ||
+                    (item.hasOwnProperty('value') && item.value === val) ||
+                    (item.hasOwnProperty('text') && item.text === val);
+            });
+            if (selected.length === 0) {
+                return false;
+            }
+            else {
+                selected = selected[0];
+                if (Object.is(selected, this._value)) {
+                    return false;
+                }
+                else {
+                    this._value = selected;
+                    return true;
+                }
+            }
+        }
+        else if (typeof val == 'object' && !Array.isArray(val)) {
+            if (Object.is(this._value, val))
+                return false;
+            let key = Object.keys(val)[0];
+            if (key == null)
+                return false;
+            let selected = this.options.filter((item) => {
+                return (item.hasOwnProperty(key) && item[key] === val[key]);
+            });
+            if (selected.length === 0) {
+                return false;
+            }
+            else {
+                selected = selected[0];
+                if (Object.is(selected, this._value)) {
+                    return false;
+                }
+                else {
+                    this._value = selected;
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
     }
     static get observedAttributes() {
         return ['label', 'disabled', 'required', 'multiple', 'name', 'value', 'items'];
