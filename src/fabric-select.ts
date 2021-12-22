@@ -61,9 +61,7 @@ class FabricSelect extends HTMLElement {
       <label class="ms-Label hide-when-empty"></label>
       <div style="display:flex">
         <fabric-command-button class="selector" style="flex-grow:1"></fabric-command-button>
-        <button class="ms-SelectClearButton is-hidden">
-          X
-			</button>
+        <button type="button" class="ms-SelectClearButton is-hidden">X</button>
       </div>`;
 
     this.innerHTML = markup;
@@ -87,12 +85,10 @@ class FabricSelect extends HTMLElement {
 
     if (property == null || property === 'options') {
 
-      console.log('__setProperties, options');
-
       if (this._refs.button) {
         this._refs.button.items = this.options;
       } else {
-        console.log('Too early');
+        // console.log('Too early');
       }
     }
 
@@ -115,7 +111,6 @@ class FabricSelect extends HTMLElement {
 
         // Set .is-selected on new entry
         const key = window.btoa(JSON.stringify(this._value));
-        console.log('key', key);
         let selection = this._refs.button.querySelector('[data-source="' + key + '"]> .ms-ContextualMenu-link');
         if (selection) selection.classList.add('is-selected');
 
@@ -134,12 +129,12 @@ class FabricSelect extends HTMLElement {
     if (!this._refs.button) return;
 
     this.addEventListener('contextual-menu-link-click', (e: any) => {
-      console.log('contextual-menu-link-click on select menu', e);
       e.preventDefault();
 
       var newlySelected = e.detail?.node;
       if (!newlySelected) {
         this._refs.button.click();
+        // console.log(1);
         return;
       }
 
@@ -148,6 +143,7 @@ class FabricSelect extends HTMLElement {
       // Maybe cancel
       if (newlySelected.classList.contains('is-disabled') || (contextualMenuItem && contextualMenuItem.classList.contains('ms-ContextualMenu-item--header'))) {
         this._refs.button.click();
+        // console.log(2);
         return;
       }
 
@@ -173,6 +169,16 @@ class FabricSelect extends HTMLElement {
         // Close menu
         this._refs.button.click();
       }
+
+
+      // Stop original event and emit own event
+      e.stopPropagation();
+      this.dispatchEvent(
+        new CustomEvent(
+          'fabric-select-change',
+          { detail: { value: this._value }, bubbles: true, cancelable: true, composed: true }
+        )
+      );
 
     }, { capture: true })
 

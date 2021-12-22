@@ -45,14 +45,14 @@ class FabricCommandButton extends HTMLElement {
     let modifier = (this._modifier) ? 'ms-CommandButton--' + this._modifier : '';
 
     let markup = `<div class="ms-CommandButton ${modifier}">
-            <button class="ms-CommandButton-button">
+            <button type="button" class="ms-CommandButton-button">
                 <span class="ms-CommandButton-icon ms-fontColor-themePrimary"><i class="ms-Icon"></i></span> 
                 <span class="ms-CommandButton-label"></span> 
 				<span class="ms-CommandButton-dropdownIcon"><svg class="ms-Icon" style="width:18px;height:18px;padding: 0px" width="18px" height="18px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M8.36612 16.1161C7.87796 16.6043 7.87796 17.3957 8.36612 17.8839L23.1161 32.6339C23.6043 33.122 24.3957 33.122 24.8839 32.6339L39.6339 17.8839C40.122 17.3957 40.122 16.6043 39.6339 16.1161C39.1457 15.628 38.3543 15.628 37.8661 16.1161L24 29.9822L10.1339 16.1161C9.64573 15.628 8.85427 15.628 8.36612 16.1161Z" fill="#212121"/>
 </svg></span>
             </button>
-			<button class="ms-CommandButton-splitIcon">
+			<button type="button" class="ms-CommandButton-splitIcon">
 				<svg class="ms-Icon" width="16px" height="16px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M8.36612 16.1161C7.87796 16.6043 7.87796 17.3957 8.36612 17.8839L23.1161 32.6339C23.6043 33.122 24.3957 33.122 24.8839 32.6339L39.6339 17.8839C40.122 17.3957 40.122 16.6043 39.6339 16.1161C39.1457 15.628 38.3543 15.628 37.8661 16.1161L24 29.9822L10.1339 16.1161C9.64573 15.628 8.85427 15.628 8.36612 16.1161Z" fill="#212121"/>
 </svg>

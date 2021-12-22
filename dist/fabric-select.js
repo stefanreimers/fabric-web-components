@@ -42,9 +42,7 @@ class FabricSelect extends HTMLElement {
       <label class="ms-Label hide-when-empty"></label>
       <div style="display:flex">
         <fabric-command-button class="selector" style="flex-grow:1"></fabric-command-button>
-        <button class="ms-SelectClearButton is-hidden">
-          X
-			</button>
+        <button type="button" class="ms-SelectClearButton is-hidden">X</button>
       </div>`;
         this.innerHTML = markup;
         this._refs = {
@@ -60,12 +58,10 @@ class FabricSelect extends HTMLElement {
                 this._refs.button.disabled = this._disabled;
         }
         if (property == null || property === 'options') {
-            console.log('__setProperties, options');
             if (this._refs.button) {
                 this._refs.button.items = this.options;
             }
             else {
-                console.log('Too early');
             }
         }
         if (property == null || property === 'required') {
@@ -82,7 +78,6 @@ class FabricSelect extends HTMLElement {
                         preSelected.classList.remove('is-selected');
                 }
                 const key = window.btoa(JSON.stringify(this._value));
-                console.log('key', key);
                 let selection = this._refs.button.querySelector('[data-source="' + key + '"]> .ms-ContextualMenu-link');
                 if (selection)
                     selection.classList.add('is-selected');
@@ -98,7 +93,6 @@ class FabricSelect extends HTMLElement {
             return;
         this.addEventListener('contextual-menu-link-click', (e) => {
             var _a;
-            console.log('contextual-menu-link-click on select menu', e);
             e.preventDefault();
             var newlySelected = (_a = e.detail) === null || _a === void 0 ? void 0 : _a.node;
             if (!newlySelected) {
@@ -125,6 +119,8 @@ class FabricSelect extends HTMLElement {
                 this._refs.button.label = newlySelected.textContent;
                 this._refs.button.click();
             }
+            e.stopPropagation();
+            this.dispatchEvent(new CustomEvent('fabric-select-change', { detail: { value: this._value }, bubbles: true, cancelable: true, composed: true }));
         }, { capture: true });
     }
     __setValue(val) {
